@@ -1,3 +1,6 @@
+#[cfg(feature = "blocking")]
+pub mod blocking;
+
 mod course;
 mod error;
 mod method;
