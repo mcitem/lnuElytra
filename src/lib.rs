@@ -1,6 +1,9 @@
 #[cfg(feature = "blocking")]
 pub mod blocking;
 
+#[cfg(feature = "__pyo3")]
+pub mod pyo3;
+
 mod course;
 mod error;
 mod method;
