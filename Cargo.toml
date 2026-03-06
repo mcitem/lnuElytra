@@ -12,7 +12,7 @@ name = "lnu_elytra"
 crate-type = ["cdylib", "rlib"]
 
 [features]
-default = ["__pyo3"]
+default = []
 blocking = ["dep:tokio"]
 __pyo3 = ["dep:pyo3", "dep:pyo3-stub-gen", "dep:env_logger", "blocking"]
 
