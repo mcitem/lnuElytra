@@ -8,8 +8,9 @@ use crate::{
 
 #[cfg_attr(
     feature = "__pyo3",
-    pyo3::pyclass,
-    cfg_attr(test, pyo3_stub_gen::derive::gen_stub_pyclass)
+    cfg_attr(test, pyo3_stub_gen::derive::gen_stub_pyclass),
+    derive(Clone),
+    pyo3::pyclass(get_all, from_py_object)
 )]
 #[derive(Debug, Serialize)]
 pub struct Jxb {
@@ -21,8 +22,9 @@ pub struct Jxb {
 
 #[cfg_attr(
     feature = "__pyo3",
-    pyo3::pyclass,
-    cfg_attr(test, pyo3_stub_gen::derive::gen_stub_pyclass)
+    cfg_attr(test, pyo3_stub_gen::derive::gen_stub_pyclass),
+    derive(Clone),
+    pyo3::pyclass(get_all, from_py_object)
 )]
 #[derive(Debug, Serialize)]
 pub struct Course {
