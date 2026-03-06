@@ -60,8 +60,8 @@ impl Client {
 /// { flag: "0", msg: Some("超过体育分项本学期本专业最高选课门次限制，不可选！") }
 #[cfg_attr(
     feature = "__pyo3",
-    pyo3::pyclass,
-    pyo3_stub_gen::derive::gen_stub_pyclass
+    cfg_attr(test, pyo3_stub_gen::derive::gen_stub_pyclass),
+    pyo3::pyclass
 )]
 #[derive(Deserialize, Debug)]
 pub struct SelectCourseResponse {
