@@ -47,10 +47,12 @@ pub mod lnu_elytra {
     #[cfg_attr(test, pyo3_stub_gen::derive::gen_stub_pymethods)]
     #[pymethods]
     impl Course {
+        #[pyo3(name = "try_select_0")]
         pub fn try_select_0_py(&self, client: &Client) -> R<SelectCourseResponse> {
             self.try_select_0_blocking(&client.0)
         }
 
+        #[pyo3(name = "try_select_by_time")]
         pub fn try_select_by_time_py(&self, client: &Client, q: &str) -> R<SelectCourseResponse> {
             self.try_select_by_time_blocking(&client.0, q)
         }
