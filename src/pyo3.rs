@@ -42,6 +42,16 @@ pub mod lnu_elytra {
         ) -> R<SelectCourseResponse> {
             self.0.select_course(course_id, course_do_id)
         }
+
+        #[cfg(feature = "cookie_override")]
+        pub fn set_cookie_override(&mut self, cookie: String) {
+            self.0.set_cookie_override(cookie);
+        }
+
+        #[cfg(feature = "cookie_override")]
+        pub fn clear_cookie_override(&mut self) {
+            self.0.clear_cookie_override();
+        }
     }
 
     #[cfg_attr(test, pyo3_stub_gen::derive::gen_stub_pymethods)]

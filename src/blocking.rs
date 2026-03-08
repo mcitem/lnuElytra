@@ -33,6 +33,17 @@ impl Client {
     }
 }
 
+#[cfg(feature = "cookie_override")]
+impl Client {
+    pub fn set_cookie_override(&mut self, cookie: String) {
+        self.client.set_cookie_override(cookie)
+    }
+
+    pub fn clear_cookie_override(&mut self) {
+        self.client.clear_cookie_override()
+    }
+}
+
 impl Course {
     pub fn try_select_0_blocking(&self, client: &Client) -> R<SelectCourseResponse> {
         client.runtime.block_on(self.try_select_0(&client.client))

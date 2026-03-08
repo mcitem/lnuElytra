@@ -82,8 +82,17 @@ impl Client {
         self.request(Method::POST, url)
     }
     pub(crate) fn request(&self, method: Method, url: &str) -> RequestBuilder {
-        self.client
-            .request(method, self.base_url.join(url).unwrap())
+        #[allow(unused_mut)]
+        let mut req = self
+            .client
+            .request(method, self.base_url.join(url).unwrap());
+
+        #[cfg(feature = "cookie_override")]
+        if let Some(cookie) = &self.cookie_override {
+            req = req.header(reqwest::header::COOKIE, cookie);
+        }
+
+        req
     }
     pub(crate) fn store(&mut self, key: &str, value: &str) {
         self.stores.insert(key.into(), value.into());
@@ -92,5 +101,16 @@ impl Client {
     pub(crate) fn use_store(&self, key: &str) -> &String {
         static EMPTY_STRING: String = String::new();
         self.stores.get(key).unwrap_or(&EMPTY_STRING)
+    }
+}
+
+#[cfg(feature = "cookie_override")]
+impl Client {
+    pub fn set_cookie_override(&mut self, cookie: String) {
+        self.cookie_override = Some(cookie);
+    }
+
+    pub fn clear_cookie_override(&mut self) {
+        self.cookie_override = None;
     }
 }

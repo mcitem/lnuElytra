@@ -14,7 +14,8 @@ crate-type = ["cdylib", "rlib"]
 [features]
 default = []
 blocking = ["dep:tokio"]
-__pyo3 = ["dep:pyo3", "blocking"]
+cookie_override = []
+__pyo3 = ["dep:pyo3", "blocking", "cookie_override"]
 
 [dependencies]
 thiserror = "2.0.18"

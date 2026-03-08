@@ -22,6 +22,8 @@ pub struct Client {
     base_url: Url,
     client: reqwest::Client,
     stores: HashMap<String, String>, // input[type="hidden"]
+    #[cfg(feature = "cookie_override")]
+    cookie_override: Option<String>, // 覆盖cookie
 }
 
 impl Client {
@@ -51,6 +53,8 @@ impl Client {
                 .build()
                 .unwrap(),
             stores: HashMap::new(),
+            #[cfg(feature = "cookie_override")]
+            cookie_override: None,
         }
     }
 }
