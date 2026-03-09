@@ -58,10 +58,15 @@ impl Client {
 /// { flag: "0", msg: Some("一门课程只能选一个教学班，不可再选！") }
 ///
 /// { flag: "0", msg: Some("超过体育分项本学期本专业最高选课门次限制，不可选！") }
+#[cfg_attr(
+    feature = "__pyo3",
+    cfg_attr(test, pyo3_stub_gen::derive::gen_stub_pyclass),
+    pyo3::pyclass(get_all)
+)]
 #[derive(Deserialize, Debug)]
 pub struct SelectCourseResponse {
-    flag: String,
-    msg: Option<String>,
+    pub flag: String,
+    pub msg: Option<String>,
 }
 
 impl SelectCourseResponse {
