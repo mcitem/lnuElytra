@@ -6,6 +6,12 @@ use crate::{
     error::{Error, R},
 };
 
+#[cfg_attr(
+    feature = "__pyo3",
+    cfg_attr(test, pyo3_stub_gen::derive::gen_stub_pyclass),
+    derive(Clone),
+    pyo3::pyclass(get_all, from_py_object)
+)]
 #[derive(Debug, Serialize)]
 pub struct Jxb {
     pub jxb_id: String,
@@ -14,6 +20,12 @@ pub struct Jxb {
     pub sksj: String,
 }
 
+#[cfg_attr(
+    feature = "__pyo3",
+    cfg_attr(test, pyo3_stub_gen::derive::gen_stub_pyclass),
+    derive(Clone),
+    pyo3::pyclass(get_all, from_py_object)
+)]
 #[derive(Debug, Serialize)]
 pub struct Course {
     pub xkkz_id: String,
