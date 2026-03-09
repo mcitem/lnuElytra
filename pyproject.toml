@@ -11,3 +11,8 @@ classifiers = [
     "Programming Language :: Python :: Implementation :: PyPy",
 ]
 dynamic = ["version"]
+readme = "README.md"
+description = "LNU 岭南师范学院 正方教务系统 抢课 选课工具"
+urls = { "Source" = "https://github.com/mcitem/lnuElytra", "Documentation" = "https://lnu-elytra.mcitem.net" }
+license = { file = "LICENSE" }
+keywords = ["lnu", "岭师", "岭南师范学院", "正方教务系统", "抢课", "选课"]

@@ -7,6 +7,8 @@ license = "AGPL-3.0"
 repository = "https://github.com/mcitem/lnuElytra"
 description = "LNU 岭南师范学院 正方教务系统 抢课 选课工具"
 
+include = ["src/**/*", "Cargo.toml", "README.md", "LICENSE"]
+
 [lib]
 name = "lnu_elytra"
 crate-type = ["cdylib", "rlib"]

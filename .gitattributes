@@ -1,1 +1,2 @@
 *.pyi linguist-generated=true
+docs/* linguist-documentation=true
