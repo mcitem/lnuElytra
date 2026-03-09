@@ -46,8 +46,12 @@ impl Client {
         LazyLock::new(|| Selector::parse("input[type='hidden']").unwrap());
 
     pub fn new() -> Self {
+        Self::new_with_base(Url::parse("http://jw.lingnan.edu.cn").unwrap())
+    }
+
+    pub fn new_with_base(backend: Url) -> Self {
         Self {
-            base_url: Url::parse("http://jw.lingnan.edu.cn").unwrap(),
+            base_url: backend,
             client: reqwest::Client::builder()
                 .cookie_store(true)
                 .build()
@@ -56,5 +60,10 @@ impl Client {
             #[cfg(feature = "cookie_override")]
             cookie_override: None,
         }
+    }
+
+    pub fn with_base(mut self, backend: Url) -> Self {
+        self.base_url = backend;
+        self
     }
 }
