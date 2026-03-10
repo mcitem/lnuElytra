@@ -3,12 +3,14 @@ use serde::Serialize;
 use crate::{
     Client,
     error::{Error, R},
-    utils::ToHtml,
+    utils::{ToHtml, macros::info},
 };
 
 impl Client {
     /// 获取选课基本参数，每次选课只需要执行一次
     pub async fn init(&mut self) -> R {
+        info!("正在获取选课基本参数...");
+
         let index_doc = self
             .get(&Client::SELECT_COURSE_HTML_URL)
             .send()
@@ -48,6 +50,8 @@ impl Client {
             let value = item.attr("value").unwrap_or("");
             self.store(name, value);
         }
+
+        info!("选课基本参数获取成功");
 
         Ok(())
     }

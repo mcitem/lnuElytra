@@ -4,11 +4,14 @@ use crate::{
     Client,
     course::{Course, Jxb},
     error::{Error, R},
+    utils::macros::{debug, info, trace, warn},
 };
 
 impl Client {
     /// 查询教学班参数，需要精确的搜索
     pub async fn fetch_courses(&self, q: &str) -> R<Course> {
+        info!("查询课程，q: {}", q);
+
         #[derive(Serialize, Debug)]
         struct PartDisplayRequestData<'a> {
             #[serde(rename = "filter_list[0]")]
@@ -73,6 +76,8 @@ impl Client {
             kch_id: String, //课程号
         }
 
+        trace!("part_display request");
+
         let part_display_res = self
             .post(&Client::SELECT_COURSE_PART_DISPLAY_URL)
             .form(&part_display_data)
@@ -80,6 +85,8 @@ impl Client {
             .await?
             .json::<PartDisplayResponseData>()
             .await?;
+
+        debug!("part_display {:#?}", part_display_res);
 
         #[derive(Serialize, Debug)]
         struct QueryDoWithCouresIdRequestData<'a> {
@@ -137,6 +144,8 @@ impl Client {
                           // xqumc: String,     //校区名称
         }
 
+        trace!("query_do request");
+
         let query_do_res = self
             .post(&Client::SELECT_COURSE_QUERY_DO_WITH_COURSE_ID_URL)
             .form(&query_do_data)
@@ -144,6 +153,8 @@ impl Client {
             .await?
             .json::<Vec<SelectCourseQueryDoWithCourseIdResponseInnerData>>()
             .await?;
+
+        debug!("query_do {:#?}", query_do_res);
 
         let mut returndta = Course {
             xkkz_id: self
@@ -164,6 +175,14 @@ impl Client {
                 sksj: item.sksj,
             });
         }
+
+        if returndta.jxb.is_empty() {
+            warn!("{} 查询教学班为空", q);
+        }
+
+        info!("获取课程信息成功");
+
+        debug!("课程信息 {:#?}", returndta);
 
         Ok(returndta)
     }

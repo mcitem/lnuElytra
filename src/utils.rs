@@ -9,6 +9,46 @@ use crate::{
     error::{Error, R},
 };
 
+pub(crate) mod macros {
+
+    macro_rules! error {
+        ($($arg:tt)*) => {
+            #[cfg(feature = "tracing")]
+            tracing::error!($($arg)*);
+        };
+    }
+
+    macro_rules! tracing_warn{
+        ($($arg:tt)*) => {
+            #[cfg(feature = "tracing")]
+            tracing::warn!($($arg)*);
+        };
+    }
+
+    macro_rules! info {
+        ($($arg:tt)*) => {
+            #[cfg(feature = "tracing")]
+            tracing::info!($($arg)*);
+        };
+    }
+
+    macro_rules! debug {
+        ($($arg:tt)*) => {
+            #[cfg(feature = "tracing")]
+            tracing::debug!($($arg)*);
+        };
+    }
+
+    macro_rules! trace {
+        ($($arg:tt)*) => {
+            #[cfg(feature = "tracing")]
+            tracing::trace!($($arg)*);
+        };
+    }
+
+    pub(crate) use {debug, error, info, trace, tracing_warn as warn};
+}
+
 #[derive(Deserialize, Debug)]
 pub struct PublicKey {
     modulus: String,

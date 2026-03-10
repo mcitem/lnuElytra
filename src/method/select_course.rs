@@ -3,6 +3,7 @@ use serde::{Deserialize, Serialize};
 use crate::{
     Client,
     error::{Error, R},
+    utils::macros::{debug, error, info, trace, warn},
 };
 
 impl Client {
@@ -12,12 +13,15 @@ impl Client {
         course_id: &str,
         course_do_id: &str,
     ) -> R<SelectCourseResponse> {
+        info!("执行选课");
+
         let xh = self
             .stores
             .get("xh_id")
             .ok_or(Error::MissingField("xh_id"))?;
 
         if xh.len() < 8 {
+            error!("xh_id {} 无法提取选课参数", xh);
             return Err(Error::InvalidXhId);
         }
 
@@ -30,6 +34,8 @@ impl Client {
             njdm_id: &'a str,
             zyh_id: &'a str,
         }
+
+        trace!("发送请求选课");
 
         let res = self
             .post(&Client::SELECT_COURSE_URL)
@@ -44,6 +50,14 @@ impl Client {
             .await?;
 
         let res = res.json::<SelectCourseResponse>().await?;
+
+        if res.is_success() {
+            info!("选课成功");
+        } else {
+            warn!("选课失败: {}", res.msg().unwrap_or("未知错误"));
+        }
+
+        debug!("选课结果: {:?}", res);
 
         Ok(res)
     }
