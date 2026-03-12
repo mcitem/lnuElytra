@@ -1,6 +1,6 @@
 [package]
 name = "lnu-elytra"
-version = "0.0.0-v2026.3.5"
+version = "0.0.5"
 edition = "2024"
 
 license = "AGPL-3.0"
