@@ -1,3 +1,5 @@
+//! [使用文档](https://lnu-elytra.mcitem.net)
+
 #[cfg(feature = "blocking")]
 pub mod blocking;
 
