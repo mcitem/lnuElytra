@@ -17,7 +17,7 @@ use reqwest::Url;
 use scraper::Selector;
 use std::{collections::HashMap, sync::LazyLock};
 
-#[derive(Debug, Clone)]
+#[derive(Debug)]
 pub struct Client {
     base_url: Url,
     client: reqwest::Client,
