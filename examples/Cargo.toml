@@ -1,0 +1,9 @@
+[package]
+name = "lnu-elytra-examples"
+version = "0.1.0"
+edition = "2024"
+
+[dependencies]
+lnu-elytra = { features = ["tracing", "cookie_override"], workspace = true }
+tokio = { version = "1.50.0", features = ["macros", "rt-multi-thread"] }
+tracing-subscriber = { version = "0.3.22", features = ["env-filter"] }
