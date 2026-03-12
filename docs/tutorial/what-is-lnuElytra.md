@@ -1,6 +1,6 @@
 # lnuElytra 是什么?
 
-[lnuElytra](https://github.com/mcitem/lnuElytra) 是适用于 [岭南师范学院正方教务系统](http://jw.lingnan.edu.cn) 的抢选课工具。
+[lnuElytra](https://github.com/mcitem/lnuElytra) 是适用于 [岭南师范学院正方教务系统](http://jw.lingnan.edu.cn) 的抢选课工具。（理论上相同版本的正方教务系统都能通用
 
 由23级学长开发，经过多轮真实抢课测试，最快能3秒抢到课。现已临近毕业已经不再需要抢课，故免费开源供大家使用。
 
@@ -52,6 +52,11 @@
 以下学校经过实测可用
 
 - [广州商学院](http://jwxt.gcc.edu.cn/xtgl/login_slogin.html)
+
+```rs
+// 在 广州商学院 抢课（更换教务系统地址
+let mut client = Client::new_with_base("http://jwxt.gcc.edu.cn".try_into()?);
+```
 
 ## 免责声明
 

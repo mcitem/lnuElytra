@@ -4,7 +4,7 @@ layout: home
 
 hero:
   name: lnuElytra
-  text: 岭师抢课工具
+  text: 正方教务系统抢课工具
   tagline: LNU LNSF 岭南师范学院 正方教务系统 抢课 选课工具
   actions:
     - theme: brand

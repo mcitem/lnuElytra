@@ -4,6 +4,15 @@
 
 [crates.io/lnu-elytra](http://crates.io/crates/lnu-elytra)
 
+安装Rust工具链 [安装 Rust](https://rust-lang.org/zh-CN/tools/install/)
+
+```sh
+git clone https://github.com/mcitem/lnuElytra
+cd examples
+# 修改 examples/src/bin/best中的教学班、账号密码
+cargo run --bin best
+```
+
 ## 异步API（推荐使用）
 
 ### 安装
@@ -15,21 +24,7 @@ cargo add lnu-elytra
 
 ### 使用
 
-```rs
-#[tokio::main]
-async fn main() -> Result<(), Box<dyn std::error::Error>> {
-    let mut client = lnu_elytra::Client::new();
-    client.login("账号", "密码").await?;
-    client.init().await?;
-
-    // 教学班示例：(2025-2026-2)-77101504-02
-    // 使用精确的教学班查询能能减少教务系统返回的数据量，有利于加快抢课。
-    let course = client.fetch_courses("教学班").await?;
-    // 只有当使用精确教学班查询时，才适合直接调用 try_select_o
-    course.try_select_0(&client).await?;
-    Ok(())
-}
-```
+<<< @/../examples/src/bin/quick-start.rs
 
 ## 最佳实践
 
@@ -37,23 +32,11 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
 
 ### 示例：通过stdin控制脚本继续
 
-```rs
-#[tokio::main]
-async fn main() -> Result<(), Box<dyn std::error::Error>> {
-    let mut client = lnu_elytra::Client::new();
-    client.login("账号", "密码").await?;
+<<< @/../examples/src/bin/stdin-control.rs
 
-    println!("登录成功，按回车键继续...");
-    let mut buf = String::new();
-    std::io::stdin().read_line(&mut buf)?;
-    println!("正在初始化...");
+### 完整示例(可直接使用)
 
-    client.init().await?;
-    let course = client.fetch_courses("教学班").await?;
-    course.try_select_0(&client).await?;
-    Ok(())
-}
-```
+<<< @/../examples/src/bin/best.rs
 
 ## 阻塞API
 
@@ -71,13 +54,4 @@ cargo add lnu-elytra -F blocking
 
 ### 使用
 
-```rs
-fn main() -> Result<(), Box<dyn std::error::Error>> {
-    let mut client = lnu_elytra::blocking::Client::new();
-    client.login("账号", "密码")?;
-    client.init()?;
-    let course = client.fetch_course("教学班")?;
-    course.try_select_0_blocking(&client)?;
-    Ok(())
-}
-```
+<<< @/../examples/src/bin/blocking.rs
