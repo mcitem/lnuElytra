@@ -62,7 +62,7 @@ impl Client {
         }
     }
 
-    pub fn with_base(mut self, backend: Url) -> Self {
+    pub fn set_base(mut self, backend: Url) -> Self {
         self.base_url = backend;
         self
     }
