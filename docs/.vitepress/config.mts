@@ -80,4 +80,14 @@ export default defineConfig({
   sitemap: {
     hostname: "https://lnu-elytra.mcitem.net",
   },
+  head: [
+    ["meta", { name: "baidu-site-verification", content: "codeva-eCaPgITh5H" }],
+    [
+      "meta",
+      {
+        name: "360-site-verification",
+        content: "c6d873c59e2800c60b7509da8450583c",
+      },
+    ],
+  ],
 });
