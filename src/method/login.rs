@@ -67,7 +67,10 @@ impl Client {
 
         let doc = login_res.doc().await?;
 
-        let u = doc.use_val(&Client::S_SESSION_USER_KEY)?;
+        let u = doc.use_val(&Client::S_SESSION_USER_KEY).or_else(|_| {
+            error!("登录失败，未找到用户名");
+            return Err(Error::LoginFailed);
+        })?;
 
         debug!("SESSION_USER_KEY: {}", u);
 
