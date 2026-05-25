@@ -1,2 +1,4 @@
+*.py linguist-generated=true
 *.pyi linguist-generated=true
+python/* linguist-generated=true
 docs/* linguist-documentation=true

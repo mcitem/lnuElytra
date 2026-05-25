@@ -1,5 +1,13 @@
 /target
-*.py
+/*.py
 /node_modules
 /docs/.vitepress/cache
 /docs/.vitepress/dist
+
+!/python/*
+!/examples/python.py
+
+/python/lnu_elytra/lnu_elytra.*.pyd
+/python/lnu_elytra/lnu_elytra.pdb
+
+__pycache__

@@ -1,0 +1,7 @@
+# The following are all type aliases.
+lnu_elytra.tracing.ExportConfig
+lnu_elytra.tracing.TracingConfig
+lnu_elytra.tracing.layers.Config
+lnu_elytra.tracing.layers.otel_otlp.ResourceValue
+lnu_elytra.tracing.layers.otel_otlp.ResourceValueArray
+lnu_elytra.tracing.layers.otel_otlp.Sampler

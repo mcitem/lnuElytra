@@ -68,6 +68,12 @@ pub mod lnu_elytra {
         }
     }
 
+    #[pymodule_init]
+    fn init(m: &Bound<'_, PyModule>) -> PyResult<()> {
+        pyo3_tracing_subscriber::add_submodule("lnu_elytra", "tracing", m.py(), m)?;
+        Ok(())
+    }
+
     #[cfg(test)]
     pyo3_stub_gen::define_stub_info_gatherer!(stub_info);
 }
@@ -79,5 +85,12 @@ fn gen_stub_info() -> pyo3_stub_gen::Result<()> {
     env_logger::Builder::from_env(env_logger::Env::default().filter_or("RUST_LOG", "info")).init();
     let stub = lnu_elytra::stub_info()?;
     stub.generate()?;
+
+    pyo3_tracing_subscriber::stubs::write_stub_files(
+        "lnu_elytra",
+        "tracing",
+        &stub.python_root.join("lnu_elytra/tracing"),
+    )?;
+
     Ok(())
 }
