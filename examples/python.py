@@ -1,9 +1,9 @@
-from lnu_elytra.tracing import Tracing, GlobalTracingConfig, SimpleConfig, subscriber, layers
+from lnu_elytra.tracing import Tracing, GlobalTracingConfig, BatchConfig, subscriber, layers
 from lnu_elytra import Client;
 import asyncio
 
 cfg = GlobalTracingConfig(
-    SimpleConfig(
+    BatchConfig(
         subscriber.Config(
             layers.file.Config(
                 file_path=None,
