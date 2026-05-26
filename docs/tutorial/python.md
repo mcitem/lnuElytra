@@ -66,3 +66,7 @@ PS E:\> python .\main.py
 
 登陆失败，请检查用户名或者密码是否正确：LoginFailed
 ```
+
+## 异步
+
+<<< @/../examples/python_async.py
