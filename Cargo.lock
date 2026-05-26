@@ -1094,6 +1094,7 @@ dependencies = [
  "env_logger",
  "hex",
  "pyo3",
+ "pyo3-async-runtimes",
  "pyo3-stub-gen",
  "pyo3-tracing-subscriber",
  "rand 0.8.5",
@@ -1814,7 +1815,19 @@ dependencies = [
  "once_cell",
  "pin-project-lite",
  "pyo3",
+ "pyo3-async-runtimes-macros",
  "tokio",
+]
+
+[[package]]
+name = "pyo3-async-runtimes-macros"
+version = "0.27.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "bcd7d70ee0ca1661c40407e6f84e4463ef2658c90a9e2fbbd4515b2bcdfcaeca"
+dependencies = [
+ "proc-macro2",
+ "quote",
+ "syn",
 ]
 
 [[package]]

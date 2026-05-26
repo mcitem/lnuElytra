@@ -74,6 +74,121 @@ pub mod lnu_elytra {
         Ok(())
     }
 
+    use std::sync::Arc;
+    use tokio::sync::RwLock;
+
+    use pyo3_stub_gen::derive::*;
+
+    #[gen_stub_pyclass]
+    #[pyclass]
+    pub struct AsyncClient(Arc<RwLock<crate::Client>>);
+
+    #[gen_stub_pymethods]
+    #[pymethods]
+    impl AsyncClient {
+        #[new]
+        fn new() -> Self {
+            Self(Arc::new(RwLock::new(crate::Client::new())))
+        }
+
+        #[gen_stub(override_return_type(type_repr = "typing.Awaitable[None]"))]
+        fn login<'a>(
+            &self,
+            py: Python<'a>,
+            username: String,
+            password: String,
+        ) -> PyResult<Bound<'a, PyAny>> {
+            let client = self.0.clone();
+            pyo3_async_runtimes::tokio::future_into_py(py, async move {
+                let mut client = client.write().await;
+                Ok(client
+                    .login(&username, &password)
+                    .await
+                    .map_err::<PyErr, _>(Into::into)?)
+            })
+        }
+
+        #[gen_stub(override_return_type(type_repr = "typing.Awaitable[None]"))]
+        fn init<'a>(&self, py: Python<'a>) -> PyResult<Bound<'a, PyAny>> {
+            let client = self.0.clone();
+            pyo3_async_runtimes::tokio::future_into_py(py, async move {
+                let mut client = client.write().await;
+                Ok(client.init().await.map_err::<PyErr, _>(Into::into)?)
+            })
+        }
+
+        #[gen_stub(override_return_type(type_repr = "typing.Awaitable[Course]"))]
+        fn fetch_courses<'a>(&self, py: Python<'a>, q: &str) -> PyResult<Bound<'a, PyAny>> {
+            let client = self.0.clone();
+            let q = q.to_string();
+            pyo3_async_runtimes::tokio::future_into_py(py, async move {
+                let client = client.read().await;
+                Ok(client
+                    .fetch_courses(&q)
+                    .await
+                    .map_err::<PyErr, _>(Into::into)?)
+            })
+        }
+
+        #[gen_stub(override_return_type(type_repr = "typing.Awaitable[SelectCourseResponse]"))]
+        fn select_course<'a>(
+            &self,
+            py: Python<'a>,
+            course_id: String,
+            course_do_id: String,
+        ) -> PyResult<Bound<'a, PyAny>> {
+            let client = self.0.clone();
+            pyo3_async_runtimes::tokio::future_into_py(py, async move {
+                let client = client.read().await;
+                Ok(client
+                    .select_course(&course_id, &course_do_id)
+                    .await
+                    .map_err::<PyErr, _>(Into::into)?)
+            })
+        }
+    }
+
+    #[pyo3_stub_gen::derive::gen_stub_pymethods]
+    #[pymethods]
+    impl Course {
+        #[gen_stub(override_return_type(type_repr = "typing.Awaitable[SelectCourseResponse]"))]
+        fn async_try_select_0<'a>(
+            &self,
+            py: Python<'a>,
+            client: &AsyncClient,
+        ) -> PyResult<Bound<'a, PyAny>> {
+            let course = self.clone();
+            let client = client.0.clone();
+            pyo3_async_runtimes::tokio::future_into_py(py, async move {
+                let client = client.read().await;
+                course
+                    .try_select_0(&client)
+                    .await
+                    .map_err::<PyErr, _>(Into::into)?;
+                Ok(())
+            })
+        }
+
+        #[gen_stub(override_return_type(type_repr = "typing.Awaitable[SelectCourseResponse]"))]
+        fn async_try_select_by_time<'a>(
+            &self,
+            py: Python<'a>,
+            client: &AsyncClient,
+            q: String,
+        ) -> PyResult<Bound<'a, PyAny>> {
+            let course = self.clone();
+            let client = client.0.clone();
+            pyo3_async_runtimes::tokio::future_into_py(py, async move {
+                let client = client.read().await;
+                course
+                    .try_select_by_time(&client, &q)
+                    .await
+                    .map_err::<PyErr, _>(Into::into)?;
+                Ok(())
+            })
+        }
+    }
+
     #[cfg(test)]
     pyo3_stub_gen::define_stub_info_gatherer!(stub_info);
 }

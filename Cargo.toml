@@ -42,6 +42,11 @@ tokio = { version = "1.52.3", optional = true, features = ["rt-multi-thread"] }
 
 pyo3 = { version = "0.27", optional = true }
 pyo3-tracing-subscriber = { version = "0.4.0", features = ["stubs"] }
+pyo3-async-runtimes = { version = "0.27", features = [
+    "attributes",
+    "tokio-runtime",
+] }
+pyo3-stub-gen = { version = "0.22.3" }
 
 tracing = { version = "0.1.44", optional = true }
 
