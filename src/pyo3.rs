@@ -143,6 +143,30 @@ pub mod lnu_elytra {
                     .map_err::<PyErr, _>(Into::into)?)
             })
         }
+
+        #[cfg(feature = "cookie_override")]
+        fn set_cookie_override<'a>(
+            &self,
+            py: Python<'a>,
+            cookie: String,
+        ) -> PyResult<Bound<'a, PyAny>> {
+            let client = self.0.clone();
+            pyo3_async_runtimes::tokio::future_into_py(py, async move {
+                let mut client = client.write().await;
+                client.set_cookie_override(cookie);
+                Ok(())
+            })
+        }
+
+        #[cfg(feature = "cookie_override")]
+        fn clear_cookie_override<'a>(&self, py: Python<'a>) -> PyResult<Bound<'a, PyAny>> {
+            let client = self.0.clone();
+            pyo3_async_runtimes::tokio::future_into_py(py, async move {
+                let mut client = client.write().await;
+                client.clear_cookie_override();
+                Ok(())
+            })
+        }
     }
 
     #[cfg(test)]
@@ -154,6 +178,17 @@ pub mod lnu_elytra {
                 def init(self) -> typing.Awaitable[None]: ...
                 def fetch_courses(self, q: builtins.str) -> typing.Awaitable[Course]: ...
                 def select_course(self, course_id: builtins.str, course_do_id: builtins.str) -> typing.Awaitable[SelectCourseResponse]: ...
+            "#
+        }
+    }
+
+    #[cfg(all(test, feature = "cookie_override"))]
+    pyo3_stub_gen::inventory::submit! {
+        pyo3_stub_gen::derive::gen_methods_from_python! {
+            r#"
+            class AsyncClient:
+                def set_cookie_override(self, cookie: builtins.str) -> typing.Awaitable[None]: ...
+                def clear_cookie_override(self) -> typing.Awaitable[None]: ...
             "#
         }
     }
