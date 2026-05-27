@@ -36,6 +36,7 @@ reqwest = { version = "0.13.4", features = [
     "form",
     "json",
     "query",
+    "rustls",
 ], default-features = false }
 
 tokio = { version = "1.52.3", optional = true, features = ["rt-multi-thread"] }
