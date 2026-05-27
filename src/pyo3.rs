@@ -77,21 +77,21 @@ pub mod lnu_elytra {
     use std::sync::Arc;
     use tokio::sync::RwLock;
 
-    use pyo3_stub_gen::derive::*;
-
-    #[gen_stub_pyclass]
+    #[cfg_attr(test, pyo3_stub_gen::derive::gen_stub_pyclass)]
     #[pyclass]
     pub struct AsyncClient(Arc<RwLock<crate::Client>>);
 
-    #[gen_stub_pymethods]
+    #[cfg_attr(test, pyo3_stub_gen::derive::gen_stub_pymethods)]
     #[pymethods]
     impl AsyncClient {
         #[new]
         fn new() -> Self {
             Self(Arc::new(RwLock::new(crate::Client::new())))
         }
+    }
 
-        #[gen_stub(override_return_type(type_repr = "typing.Awaitable[None]"))]
+    #[pymethods]
+    impl AsyncClient {
         fn login<'a>(
             &self,
             py: Python<'a>,
@@ -108,7 +108,6 @@ pub mod lnu_elytra {
             })
         }
 
-        #[gen_stub(override_return_type(type_repr = "typing.Awaitable[None]"))]
         fn init<'a>(&self, py: Python<'a>) -> PyResult<Bound<'a, PyAny>> {
             let client = self.0.clone();
             pyo3_async_runtimes::tokio::future_into_py(py, async move {
@@ -117,7 +116,6 @@ pub mod lnu_elytra {
             })
         }
 
-        #[gen_stub(override_return_type(type_repr = "typing.Awaitable[Course]"))]
         fn fetch_courses<'a>(&self, py: Python<'a>, q: &str) -> PyResult<Bound<'a, PyAny>> {
             let client = self.0.clone();
             let q = q.to_string();
@@ -130,7 +128,6 @@ pub mod lnu_elytra {
             })
         }
 
-        #[gen_stub(override_return_type(type_repr = "typing.Awaitable[SelectCourseResponse]"))]
         fn select_course<'a>(
             &self,
             py: Python<'a>,
@@ -148,10 +145,21 @@ pub mod lnu_elytra {
         }
     }
 
-    #[pyo3_stub_gen::derive::gen_stub_pymethods]
+    #[cfg(test)]
+    pyo3_stub_gen::inventory::submit! {
+        pyo3_stub_gen::derive::gen_methods_from_python! {
+            r#"
+            class AsyncClient:
+                def login(self, username: builtins.str, password: builtins.str) -> typing.Awaitable[None]: ...
+                def init(self) -> typing.Awaitable[None]: ...
+                def fetch_courses(self, q: builtins.str) -> typing.Awaitable[Course]: ...
+                def select_course(self, course_id: builtins.str, course_do_id: builtins.str) -> typing.Awaitable[SelectCourseResponse]: ...
+            "#
+        }
+    }
+
     #[pymethods]
     impl Course {
-        #[gen_stub(override_return_type(type_repr = "typing.Awaitable[SelectCourseResponse]"))]
         fn async_try_select_0<'a>(
             &self,
             py: Python<'a>,
@@ -169,7 +177,6 @@ pub mod lnu_elytra {
             })
         }
 
-        #[gen_stub(override_return_type(type_repr = "typing.Awaitable[SelectCourseResponse]"))]
         fn async_try_select_by_time<'a>(
             &self,
             py: Python<'a>,
@@ -186,6 +193,17 @@ pub mod lnu_elytra {
                     .map_err::<PyErr, _>(Into::into)?;
                 Ok(())
             })
+        }
+    }
+
+    #[cfg(test)]
+    pyo3_stub_gen::inventory::submit! {
+        pyo3_stub_gen::derive::gen_methods_from_python! {
+            r#"
+            class Course:
+                def async_try_select_0(self, client: AsyncClient) -> typing.Awaitable[SelectCourseResponse]: ...
+                def async_try_select_by_time(self, client: AsyncClient, q: builtins.str) -> typing.Awaitable[SelectCourseResponse]: ...
+            "#
         }
     }
 
