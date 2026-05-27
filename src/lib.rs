@@ -16,6 +16,10 @@ pub use error::Error;
 pub use method::SelectCourseResponse;
 
 use reqwest::Url;
+
+#[cfg(feature = "reqwest_cookie_store")]
+use {reqwest_cookie_store::CookieStoreRwLock, std::sync::Arc};
+
 use scraper::Selector;
 use std::{collections::HashMap, sync::LazyLock};
 
@@ -26,6 +30,8 @@ pub struct Client {
     stores: HashMap<String, String>, // input[type="hidden"]
     #[cfg(feature = "cookie_override")]
     cookie_override: Option<String>, // 覆盖cookie
+    #[cfg(feature = "reqwest_cookie_store")]
+    pub cookie_store: Arc<CookieStoreRwLock>,
 }
 
 impl Client {
@@ -52,15 +58,25 @@ impl Client {
     }
 
     pub fn new_with_base(backend: Url) -> Self {
+        #[cfg(feature = "reqwest_cookie_store")]
+        let cookie_store = Arc::new(CookieStoreRwLock::default());
+
+        let client = reqwest::Client::builder();
+
+        #[cfg(not(feature = "reqwest_cookie_store"))]
+        let client = client.cookie_store(true);
+
+        #[cfg(feature = "reqwest_cookie_store")]
+        let client = client.cookie_provider(cookie_store.clone());
+
         Self {
             base_url: backend,
-            client: reqwest::Client::builder()
-                .cookie_store(true)
-                .build()
-                .unwrap(),
+            client: client.build().unwrap(),
             stores: HashMap::new(),
             #[cfg(feature = "cookie_override")]
             cookie_override: None,
+            #[cfg(feature = "reqwest_cookie_store")]
+            cookie_store,
         }
     }
 

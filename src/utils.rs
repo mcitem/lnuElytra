@@ -154,3 +154,25 @@ impl Client {
         self.cookie_override = None;
     }
 }
+
+#[cfg(feature = "reqwest_cookie_store")]
+impl Client {
+    pub fn cookies(&self) -> Option<String> {
+        let store = self.cookie_store.read().ok()?;
+        let res = store
+            .iter_any()
+            .filter_map(|x| match x.name() {
+                "JSESSIONID" => Some(format!("{}={}", x.name(), x.value())),
+                "X-LB" => Some(format!("{}={}", x.name(), x.value())),
+                _ => None,
+            })
+            .collect::<Vec<String>>();
+        match res.len() {
+            0 => match self.cookie_override {
+                None => None,
+                Some(ref cookie) => Some(cookie.clone()),
+            },
+            _ => Some(res.join("; ")),
+        }
+    }
+}
