@@ -105,10 +105,12 @@ client.select_course(course.kch_id, course.jxb[0].do_id)
 
 ```rs [Rust]
 client.set_cookie_override("JSESSIONID=xxxx; X-LB=yyyy".into());
+client.set_cookie_override("JSESSIONID=xxxx; zstack_cookie=YYY".into());
 ```
 
 ```py [Python]
 client.set_cookie_override("JSESSIONID=xxxx; X-LB=yyyy")
+client.set_cookie_override("JSESSIONID=xxxx; zstack_cookie=YYY")
 ```
 
 :::

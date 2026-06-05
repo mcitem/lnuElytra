@@ -19,6 +19,10 @@ impl Client {
         self.runtime.block_on(self.client.login(username, password))
     }
 
+    pub fn check_login(&self) -> R<String> {
+        self.runtime.block_on(self.client.check_login())
+    }
+
     pub fn init(&mut self) -> R {
         self.runtime.block_on(self.client.init())
     }

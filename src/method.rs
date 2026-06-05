@@ -1,3 +1,4 @@
+mod check_login;
 mod fetch_course;
 mod init;
 mod login;

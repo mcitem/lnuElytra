@@ -4,7 +4,11 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
 
     // client.login("账号", "密码").await?;
     // 通过cookie登录
-    client.set_cookie_override("JSESSIONID=XXX; X-LB=YYY".into());
+
+    // client.set_cookie_override("JSESSIONID=XXX; X-LB=YYY".into());
+    client.set_cookie_override("JSESSIONID=XXX; zstack_cookie=YYY".into());
+
+    client.check_login().await?;
 
     client.init().await?;
     let course = client.fetch_courses("教学班").await?;

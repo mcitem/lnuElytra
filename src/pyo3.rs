@@ -27,6 +27,10 @@ pub mod lnu_elytra {
             self.0.login(username, password)
         }
 
+        pub fn check_login(&self) -> R<String> {
+            self.0.check_login()
+        }
+
         pub fn init(&mut self) -> R {
             self.0.init()
         }
@@ -108,6 +112,14 @@ pub mod lnu_elytra {
             })
         }
 
+        fn check_login<'a>(&self, py: Python<'a>) -> PyResult<Bound<'a, PyAny>> {
+            let client = self.0.clone();
+            pyo3_async_runtimes::tokio::future_into_py(py, async move {
+                let client = client.read().await;
+                Ok(client.check_login().await.map_err::<PyErr, _>(Into::into)?)
+            })
+        }
+
         fn init<'a>(&self, py: Python<'a>) -> PyResult<Bound<'a, PyAny>> {
             let client = self.0.clone();
             pyo3_async_runtimes::tokio::future_into_py(py, async move {
@@ -175,6 +187,7 @@ pub mod lnu_elytra {
             r#"
             class AsyncClient:
                 def login(self, username: builtins.str, password: builtins.str) -> typing.Awaitable[None]: ...
+                def check_login(self) -> typing.Awaitable[builtins.str]: ...
                 def init(self) -> typing.Awaitable[None]: ...
                 def fetch_courses(self, q: builtins.str) -> typing.Awaitable[Course]: ...
                 def select_course(self, course_id: builtins.str, course_do_id: builtins.str) -> typing.Awaitable[SelectCourseResponse]: ...
