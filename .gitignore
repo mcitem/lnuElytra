@@ -9,5 +9,6 @@
 
 /python/lnu_elytra/lnu_elytra.*.pyd
 /python/lnu_elytra/lnu_elytra.pdb
+/python/lnu_elytra/lnu_elytra.*.so
 
 __pycache__
