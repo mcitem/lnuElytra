@@ -27,8 +27,12 @@ __pyo3 = [
     "blocking",
     "cookie_override",
 ]
+__flutter = ["dep:url", "dep:delegate"]
 
 [dependencies]
+url = { version = "2.5.8", optional = true }
+delegate = { version = "0.13.5", optional = true }
+
 thiserror = "2.0.18"
 
 hex = "0.4.3"

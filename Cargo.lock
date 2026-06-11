@@ -369,6 +369,17 @@ dependencies = [
 ]
 
 [[package]]
+name = "delegate"
+version = "0.13.5"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "780eb241654bf097afb00fc5f054a09b687dad862e485fdcf8399bb056565370"
+dependencies = [
+ "proc-macro2",
+ "quote",
+ "syn",
+]
+
+[[package]]
 name = "der"
 version = "0.7.10"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -1230,6 +1241,7 @@ name = "lnu-elytra"
 version = "0.0.6"
 dependencies = [
  "base64",
+ "delegate",
  "env_logger",
  "hex",
  "pyo3",
@@ -1245,6 +1257,7 @@ dependencies = [
  "thiserror",
  "tokio",
  "tracing",
+ "url",
 ]
 
 [[package]]

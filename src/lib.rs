@@ -6,6 +6,9 @@ pub mod blocking;
 #[cfg(feature = "__pyo3")]
 pub mod pyo3;
 
+#[cfg(feature = "__flutter")]
+pub mod flutter;
+
 mod course;
 mod error;
 mod method;
