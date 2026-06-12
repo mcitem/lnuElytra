@@ -43,6 +43,7 @@ impl From<crate::Error> for FError {
 }
 
 impl FClient {
+    /// flutter_rust_bridge:sync
     pub fn new() -> Self {
         Self(crate::Client::new())
     }
