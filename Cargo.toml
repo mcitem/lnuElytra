@@ -72,5 +72,5 @@ pyo3-stub-gen = { version = "0.22.3" }
 
 [workspace]
 resolver = "3"
-members = [".", "./examples"]
+members = [".", "./examples", "./mock"]
 dependencies = { "lnu-elytra" = { path = "." } }
