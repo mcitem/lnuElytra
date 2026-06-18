@@ -2,11 +2,13 @@
 
 [lnuElytra](https://github.com/mcitem/lnuElytra) 是适用于 [岭南师范学院正方教务系统](http://jw.lingnan.edu.cn) 的抢选课工具。（理论上相同版本的正方教务系统都能通用
 
-由23级学长开发，经过多轮真实抢课测试，最快能3秒抢到课。现已临近毕业已经不再需要抢课，故免费开源供大家使用。
+经过多轮真实抢课测试，最快能3秒抢到课.
 
-`lnuElytra` 基于Rust语言开发，并提供Python绑定以便普通用户使用。
+- [GUI](./flutter.md)
 
-如果需要同时为多个用户进行抢课，推荐使用Rust SDK进行编写。
+`lnuElytra` 基于Rust语言开发，并提供Python绑定以便普通用户使用.
+
+如果需要同时为多个用户进行抢课，推荐使用Rust SDK进行编写.
 
 - [Rust SDK 快速入门](./rust.md)
 

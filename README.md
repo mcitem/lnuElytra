@@ -7,6 +7,8 @@
 
 [使用文档](https://lnu-elytra.mcitem.net)
 
+[GUI](https://github.com/mcitem/lnu_elytra)
+
 ## 许可证
 
 `AGPL-3.0`

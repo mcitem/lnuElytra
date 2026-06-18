@@ -25,6 +25,10 @@ export default defineConfig({
         text: "使用教程",
         items: [
           {
+            text: "GUI（推荐）",
+            items: [{ text: "下载安装", link: "/tutorial/flutter" }],
+          },
+          {
             text: "Rust（推荐）",
             items: [{ text: "快速入门", link: "/tutorial/rust" }],
           },
