@@ -55,6 +55,8 @@ impl Client {
         LazyLock::new(|| Selector::parse("#sessionUserKey").unwrap());
     const S_INPUT_HIDDENT: LazyLock<Selector> =
         LazyLock::new(|| Selector::parse("input[type='hidden']").unwrap());
+    const S_INPUT_MMSFJM: LazyLock<Selector> =
+        LazyLock::new(|| Selector::parse("input[type='hidden'][name='mmsfjm']").unwrap());
 
     pub fn new() -> Self {
         Self::new_with_base(Url::parse("http://jw.lingnan.edu.cn").unwrap())

@@ -26,16 +26,24 @@ impl Client {
 
         debug!("csrftoken: {}", csrftoken);
 
-        trace!("获取公钥，使用公钥加密密码");
-
-        let mm = self
-            .get(&Client::PUBLIC_KEY_URL)
-            .send()
-            .await?
-            .json::<PublicKey>()
-            .await?
-            .into_rsa_key()?
-            .enc_pwd(password)?;
+        use std::borrow::Cow;
+        let mm = if let Ok(mmsfjm) = doc.use_val(&Client::S_INPUT_MMSFJM)
+            && mmsfjm == "0"
+        {
+            trace!("mmsfjm == '0'");
+            Cow::Borrowed(password)
+        } else {
+            trace!("获取公钥，使用公钥加密密码");
+            Cow::Owned(
+                self.get(&Client::PUBLIC_KEY_URL)
+                    .send()
+                    .await?
+                    .json::<PublicKey>()
+                    .await?
+                    .into_rsa_key()?
+                    .enc_pwd(password)?,
+            )
+        };
 
         #[derive(Serialize, Debug)]
         struct LoginData<'a> {
