@@ -26,15 +26,14 @@ impl Client {
 
         debug!("csrftoken: {}", csrftoken);
 
-        trace!("获取公钥，使用公钥加密密码");
-
         use std::borrow::Cow;
-        let mm: Cow<'_, str> = if let Ok(mmsfjm) =
-            doc.use_val(&scraper::Selector::parse("input[type='hidden'][name='mmsfjm']").unwrap())
+        let mm = if let Ok(mmsfjm) = doc.use_val(&Client::S_INPUT_MMSFJM)
             && mmsfjm == "0"
         {
+            trace!("mmsfjm == '0'");
             Cow::Borrowed(password)
         } else {
+            trace!("获取公钥，使用公钥加密密码");
             Cow::Owned(
                 self.get(&Client::PUBLIC_KEY_URL)
                     .send()
