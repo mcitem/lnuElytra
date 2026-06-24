@@ -2,11 +2,12 @@ use base64::{Engine, prelude::BASE64_STANDARD};
 use reqwest::{Method, RequestBuilder, Response};
 use rsa::{Pkcs1v15Encrypt, RsaPublicKey};
 use scraper::{Html, Selector, selector::ToCss};
-use serde::Deserialize;
+use serde::{Deserialize, de::DeserializeOwned};
 
 use crate::{
     Client,
     error::{Error, R},
+    utils::macros::error,
 };
 
 pub(crate) mod macros {
@@ -83,12 +84,37 @@ impl EncPwd for RsaPublicKey {
     }
 }
 
+pub trait ToJson {
+    async fn jsonr<T: DeserializeOwned>(self) -> R<T>;
+}
+
+impl ToJson for Response {
+    async fn jsonr<T: DeserializeOwned>(self) -> R<T> {
+        if self.url().path().contains(&Client::LOGIN_URL) {
+            error!("登录已失效");
+            return Err(Error::LoginFailed);
+        };
+        Ok(self.json().await?)
+    }
+}
+
 pub trait ToHtml {
     async fn doc(self) -> R<Html>;
+    async fn _doc(self) -> R<Html>;
 }
 
 impl ToHtml for Response {
     async fn doc(self) -> R<Html> {
+        if self.url().path().contains(&Client::LOGIN_URL) {
+            error!("登录已失效");
+            return Err(Error::LoginFailed);
+        };
+
+        self._doc().await
+    }
+
+    #[inline(always)]
+    async fn _doc(self) -> R<Html> {
         let text = self.text().await?;
         let doc = Html::parse_document(&text);
         Ok(doc)

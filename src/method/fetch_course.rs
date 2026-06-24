@@ -4,7 +4,10 @@ use crate::{
     Client,
     course::{Course, Jxb},
     error::{Error, R},
-    utils::macros::{debug, info, trace, warn},
+    utils::{
+        ToJson,
+        macros::{debug, info, trace, warn},
+    },
 };
 
 impl Client {
@@ -83,7 +86,7 @@ impl Client {
             .form(&part_display_data)
             .send()
             .await?
-            .json::<PartDisplayResponseData>()
+            .jsonr::<PartDisplayResponseData>()
             .await?;
 
         debug!("part_display {:#?}", part_display_res);
@@ -151,7 +154,7 @@ impl Client {
             .form(&query_do_data)
             .send()
             .await?
-            .json::<Vec<SelectCourseQueryDoWithCourseIdResponseInnerData>>()
+            .jsonr::<Vec<SelectCourseQueryDoWithCourseIdResponseInnerData>>()
             .await?;
 
         debug!("query_do {:#?}", query_do_res);

@@ -3,7 +3,10 @@ use serde::{Deserialize, Serialize};
 use crate::{
     Client,
     error::{Error, R},
-    utils::macros::{debug, error, info, trace, warn},
+    utils::{
+        ToJson,
+        macros::{debug, error, info, trace, warn},
+    },
 };
 
 impl Client {
@@ -49,7 +52,7 @@ impl Client {
             .send()
             .await?;
 
-        let res = res.json::<SelectCourseResponse>().await?;
+        let res = res.jsonr::<SelectCourseResponse>().await?;
 
         if res.is_success() {
             info!("选课成功");

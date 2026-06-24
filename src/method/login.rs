@@ -18,7 +18,7 @@ impl Client {
 
         trace!("加载登录页");
 
-        let doc = self.get(&Client::LOGIN_URL).send().await?.doc().await?;
+        let doc = self.get(&Client::LOGIN_URL).send().await?._doc().await?;
 
         trace!("解析登录页，获取csrftoken");
 
@@ -66,24 +66,24 @@ impl Client {
 
         trace!("发送登录请求");
 
-        let login_res = self
+        let doc = self
             .post(&Client::LOGIN_URL)
             .query(&[("time", timestamp)])
             .form(&login_data)
             .send()
+            .await?
+            ._doc()
             .await?;
 
-        let doc = login_res.doc().await?;
-
         let u = doc.use_val(&Client::S_SESSION_USER_KEY).or_else(|_| {
-            error!("登录失败，未找到用户名");
+            error!("登录失败，未找到 SESSION_USER_KEY");
             return Err(Error::LoginFailed);
         })?;
 
         debug!("SESSION_USER_KEY: {}", u);
 
         if u != username {
-            error!("登录失败，用户名不匹配");
+            error!("登录失败，SESSION_USER_KEY 不匹配");
             return Err(Error::LoginFailed);
         }
 
