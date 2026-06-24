@@ -21,6 +21,7 @@ cookie_override = []
 reqwest_cookie_store = ["dep:reqwest_cookie_store"]
 tracing = ["dep:tracing"]
 __pyo3 = [
+    "dep:url",
     "dep:pyo3",
     "dep:pyo3-tracing-subscriber",
     "dep:pyo3-async-runtimes",

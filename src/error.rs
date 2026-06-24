@@ -2,6 +2,10 @@ use thiserror::Error;
 
 #[derive(Error, Debug)]
 pub enum Error {
+    #[cfg(any(feature = "__pyo3", feature = "__flutter"))]
+    #[error("UrlParseError: {0}")]
+    UrlParseError(url::ParseError),
+
     #[error("[init_firstXkkzId] 不存在，未到选课时间")]
     NotyetStarted,
 

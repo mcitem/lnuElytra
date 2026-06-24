@@ -8,6 +8,7 @@ pub struct FError {
 }
 
 pub enum FErrorKind {
+    UrlParseError,
     NotyetStarted,
     JxbNotFound,
     InvalidXhId,
@@ -26,6 +27,7 @@ impl From<crate::Error> for FError {
         Self {
             error: format!("{e:?}"),
             kind: match e {
+                crate::Error::UrlParseError(_) => FErrorKind::UrlParseError,
                 crate::Error::NotyetStarted => FErrorKind::NotyetStarted,
                 crate::Error::JxbNotFound(_) => FErrorKind::JxbNotFound,
                 crate::Error::InvalidXhId => FErrorKind::InvalidXhId,
@@ -48,10 +50,12 @@ impl FClient {
         Self(crate::Client::new())
     }
 
-    pub fn new_with_base(backend: &str) -> Result<Self, String> {
-        Ok(Self(crate::Client::new_with_base(
-            url::Url::parse(backend).map_err(|e| e.to_string())?,
-        )))
+    pub fn new_with_base(backend: &str) -> Result<Self, FError> {
+        let backend: Result<_, FError> = url::Url::parse(backend)
+            .map_err(crate::Error::UrlParseError)
+            .map_err(Into::into);
+
+        Ok(Self(crate::Client::new_with_base(backend?)))
     }
 
     delegate! {

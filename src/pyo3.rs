@@ -19,8 +19,17 @@ pub mod lnu_elytra {
     #[pymethods]
     impl Client {
         #[new]
-        fn new() -> Self {
-            Self(blocking::Client::new())
+        #[pyo3(signature = (base=None))]
+        fn new(base: Option<String>) -> PyResult<Self> {
+            Ok(Self(match base {
+                None => blocking::Client::new(),
+                Some(base) => {
+                    let base: Result<_, PyErr> = blocking::Client::new_with_base(&base)
+                        .map_err(crate::Error::UrlParseError)
+                        .map_err(Into::into);
+                    base?
+                }
+            }))
         }
 
         pub fn login(&mut self, username: &str, password: &str) -> R {
@@ -89,8 +98,19 @@ pub mod lnu_elytra {
     #[pymethods]
     impl AsyncClient {
         #[new]
-        fn new() -> Self {
-            Self(Arc::new(RwLock::new(crate::Client::new())))
+        #[pyo3(signature = (base=None))]
+        fn new(base: Option<String>) -> PyResult<Self> {
+            Ok(Self(Arc::new(RwLock::new(match base {
+                None => crate::Client::new(),
+                Some(base) => {
+                    let base: PyResult<url::Url> = base
+                        .parse()
+                        .map_err(crate::Error::UrlParseError)
+                        .map_err(Into::into);
+
+                    crate::Client::new_with_base(base?)
+                }
+            }))))
         }
     }
 

@@ -15,6 +15,13 @@ impl Client {
         }
     }
 
+    pub fn new_with_base(backend: &str) -> Result<Self, url::ParseError> {
+        Ok(Self {
+            client: crate::Client::new_with_base(backend.parse()?),
+            runtime: Runtime::new().unwrap(),
+        })
+    }
+
     pub fn login(&mut self, username: &str, password: &str) -> R {
         self.runtime.block_on(self.client.login(username, password))
     }
