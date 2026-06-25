@@ -1,6 +1,6 @@
 use base64::{Engine, prelude::BASE64_STANDARD};
 use reqwest::{Method, RequestBuilder, Response};
-use rsa::{Pkcs1v15Encrypt, RsaPublicKey};
+use rsa::{BoxedUint, Pkcs1v15Encrypt, RsaPublicKey};
 use scraper::{Html, Selector, selector::ToCss};
 use serde::{Deserialize, de::DeserializeOwned};
 
@@ -58,14 +58,10 @@ pub struct PublicKey {
 
 impl PublicKey {
     pub fn into_rsa_key(self) -> R<RsaPublicKey> {
-        let rsa_n = hex::encode(BASE64_STANDARD.decode(self.modulus)?);
-        let rsa_e = hex::encode(BASE64_STANDARD.decode(self.exponent)?);
-
-        let n = rsa::BigUint::parse_bytes(rsa_n.as_bytes(), 16)
-            .ok_or(crate::error::Error::ParseRsaKeyError("rsa_n"))?;
-        let e = rsa::BigUint::parse_bytes(rsa_e.as_bytes(), 16)
-            .ok_or(crate::error::Error::ParseRsaKeyError("rsa_e"))?;
-
+        let n_bytes = BASE64_STANDARD.decode(self.modulus)?;
+        let e_bytes = BASE64_STANDARD.decode(self.exponent)?;
+        let n = BoxedUint::from_be_slice_vartime(&n_bytes);
+        let e = BoxedUint::from_be_slice_vartime(&e_bytes);
         let public_key = RsaPublicKey::new(n, e)?;
 
         Ok(public_key)
@@ -78,8 +74,7 @@ pub trait EncPwd {
 
 impl EncPwd for RsaPublicKey {
     fn enc_pwd(&self, pwd: &str) -> R<String> {
-        let encropy_pwd =
-            self.encrypt(&mut rand::thread_rng(), Pkcs1v15Encrypt, &pwd.as_bytes())?;
+        let encropy_pwd = self.encrypt(&mut rand::rng(), Pkcs1v15Encrypt, &pwd.as_bytes())?;
         Ok(BASE64_STANDARD.encode(encropy_pwd))
     }
 }

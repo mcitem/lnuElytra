@@ -30,9 +30,9 @@ pub enum Error {
     #[error("RSA error: {0}")]
     Rsa(#[from] rsa::errors::Error),
 
-    #[error("RSA key parse error: {0}")]
-    ParseRsaKeyError(&'static str),
-
+    // #[error("RSA key parse error: {0}")]
+    // ParseRsaKeyError(&'static str),
+    //
     #[error("Base64 decode error: {0}")]
     Base64Decode(#[from] base64::DecodeError),
 

@@ -17,7 +17,7 @@ pub enum FErrorKind {
     MissingField,
     Reqwest,
     Rsa,
-    ParseRsaKeyError,
+    // ParseRsaKeyError,
     Base64Decode,
     SystemTime,
 }
@@ -36,7 +36,7 @@ impl From<crate::Error> for FError {
                 crate::Error::MissingField(_) => FErrorKind::MissingField,
                 crate::Error::Reqwest(_) => FErrorKind::Reqwest,
                 crate::Error::Rsa(_) => FErrorKind::Rsa,
-                crate::Error::ParseRsaKeyError(_) => FErrorKind::ParseRsaKeyError,
+                // crate::Error::ParseRsaKeyError(_) => FErrorKind::ParseRsaKeyError,
                 crate::Error::Base64Decode(_) => FErrorKind::Base64Decode,
                 crate::Error::SystemTime(_) => FErrorKind::SystemTime,
             },
