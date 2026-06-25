@@ -18,7 +18,7 @@ impl Client {
 
         trace!("加载登录页");
 
-        let doc = self.get(&Client::LOGIN_URL).send().await?._doc().await?;
+        let doc = self.get(&Client::LOGIN_URL)?.send().await?._doc().await?;
 
         trace!("解析登录页，获取csrftoken");
 
@@ -35,7 +35,7 @@ impl Client {
         } else {
             trace!("获取公钥，使用公钥加密密码");
             Cow::Owned(
-                self.get(&Client::PUBLIC_KEY_URL)
+                self.get(&Client::PUBLIC_KEY_URL)?
                     .send()
                     .await?
                     .json::<PublicKey>()
@@ -67,7 +67,7 @@ impl Client {
         trace!("发送登录请求");
 
         let doc = self
-            .post(&Client::LOGIN_URL)
+            .post(&Client::LOGIN_URL)?
             .query(&[("time", timestamp)])
             .form(&login_data)
             .send()

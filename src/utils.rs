@@ -141,24 +141,24 @@ impl UseInputValue for Html {
 }
 
 impl Client {
-    pub(crate) fn get(&self, url: &str) -> RequestBuilder {
+    pub(crate) fn get(&self, url: &str) -> R<RequestBuilder> {
         self.request(Method::GET, url)
     }
-    pub(crate) fn post(&self, url: &str) -> RequestBuilder {
+    pub(crate) fn post(&self, url: &str) -> R<RequestBuilder> {
         self.request(Method::POST, url)
     }
-    pub(crate) fn request(&self, method: Method, url: &str) -> RequestBuilder {
+    pub(crate) fn request(&self, method: Method, url: &str) -> R<RequestBuilder> {
+        let url = self.base_url.join(url).map_err(Error::UrlParseError)?;
+
         #[allow(unused_mut)]
-        let mut req = self
-            .client
-            .request(method, self.base_url.join(url).unwrap());
+        let mut req = self.client.request(method, url);
 
         #[cfg(feature = "cookie_override")]
         if let Some(cookie) = &self.cookie_override {
             req = req.header(reqwest::header::COOKIE, cookie);
         }
 
-        req
+        Ok(req)
     }
     pub(crate) fn store(&mut self, key: &str, value: &str) {
         self.stores.insert(key.into(), value.into());

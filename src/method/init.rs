@@ -12,7 +12,7 @@ impl Client {
         info!("正在获取选课基本参数...");
 
         let index_doc = self
-            .get(&Client::SELECT_COURSE_HTML_URL)
+            .get(&Client::SELECT_COURSE_HTML_URL)?
             .send()
             .await?
             .doc()
@@ -38,7 +38,7 @@ impl Client {
         };
 
         let display_doc = self
-            .post(&Client::SELECT_COURSE_DISPLAY_URL)
+            .post(&Client::SELECT_COURSE_DISPLAY_URL)?
             .form(&display_data)
             .send()
             .await?

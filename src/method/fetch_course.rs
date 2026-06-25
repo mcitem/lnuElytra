@@ -82,7 +82,7 @@ impl Client {
         trace!("part_display request");
 
         let part_display_res = self
-            .post(&Client::SELECT_COURSE_PART_DISPLAY_URL)
+            .post(&Client::SELECT_COURSE_PART_DISPLAY_URL)?
             .form(&part_display_data)
             .send()
             .await?
@@ -150,7 +150,7 @@ impl Client {
         trace!("query_do request");
 
         let query_do_res = self
-            .post(&Client::SELECT_COURSE_QUERY_DO_WITH_COURSE_ID_URL)
+            .post(&Client::SELECT_COURSE_QUERY_DO_WITH_COURSE_ID_URL)?
             .form(&query_do_data)
             .send()
             .await?

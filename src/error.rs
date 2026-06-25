@@ -2,7 +2,7 @@ use thiserror::Error;
 
 #[derive(Error, Debug)]
 pub enum Error {
-    #[cfg(any(feature = "__pyo3", feature = "__flutter"))]
+    // #[cfg(any(feature = "__pyo3", feature = "__flutter"))]
     #[error("UrlParseError: {0}")]
     UrlParseError(url::ParseError),
 

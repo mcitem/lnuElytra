@@ -16,22 +16,21 @@ crate-type = ["cdylib", "rlib"]
 [features]
 default = []
 # default = ["tracing", "blocking", "__pyo3", "cookie_override"]
-blocking = ["dep:tokio", "dep:url"]
+blocking = ["dep:tokio"]
 cookie_override = []
 reqwest_cookie_store = ["dep:reqwest_cookie_store"]
 tracing = ["dep:tracing"]
 __pyo3 = [
-    "dep:url",
     "dep:pyo3",
     "dep:pyo3-tracing-subscriber",
     "dep:pyo3-async-runtimes",
     "blocking",
     "cookie_override",
 ]
-__flutter = ["dep:url", "dep:delegate"]
+__flutter = ["dep:delegate"]
 
 [dependencies]
-url = { version = "2.5.8", optional = true }
+url = { version = "2.5.8" }
 delegate = { version = "0.13.5", optional = true }
 
 thiserror = "2.0.18"

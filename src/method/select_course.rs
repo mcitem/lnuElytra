@@ -45,7 +45,7 @@ impl Client {
         // debug!("{},{}", self.use_store("njdm_id"), self.use_store("zyh_id"));
 
         let res = self
-            .post(&Client::SELECT_COURSE_URL)
+            .post(&Client::SELECT_COURSE_URL)?
             .form(&SelectCouresData {
                 jxb_ids: course_do_id,
                 kch_id: course_id,
