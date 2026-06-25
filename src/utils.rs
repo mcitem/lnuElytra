@@ -188,16 +188,25 @@ impl Client {
         let res = store
             .iter_any()
             .filter_map(|x| match x.name() {
-                "JSESSIONID" => Some(format!("{}={}", x.name(), x.value())),
-                "X-LB" => Some(format!("{}={}", x.name(), x.value())),
+                "JSESSIONID" => Some(x),
+                "X-LB" => Some(x),
+                "zstack_cookie" => Some(x),
+                "route" => Some(x),
                 _ => None,
             })
+            .map(|x| format!("{}={}", x.name(), x.value()))
             .collect::<Vec<String>>();
         match res.len() {
-            0 => match self.cookie_override {
-                None => None,
-                Some(ref cookie) => Some(cookie.clone()),
-            },
+            0 => {
+                #[cfg(feature = "cookie_override")]
+                match self.cookie_override {
+                    Some(ref cookie) => Some(cookie.clone()),
+                    None => None,
+                }
+
+                #[cfg(not(feature = "cookie_override"))]
+                None
+            }
             _ => Some(res.join("; ")),
         }
     }
