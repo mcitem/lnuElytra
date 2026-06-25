@@ -2,10 +2,10 @@ use serde::{Deserialize, Serialize};
 
 use crate::{
     Client,
-    error::{Error, R},
+    error::R,
     utils::{
         ToJson,
-        macros::{debug, error, info, trace, warn},
+        macros::{debug, info, trace, warn},
     },
 };
 
@@ -18,15 +18,15 @@ impl Client {
     ) -> R<SelectCourseResponse> {
         info!("执行选课");
 
-        let xh = self
-            .stores
-            .get("xh_id")
-            .ok_or(Error::MissingField("xh_id"))?;
+        // let xh = self
+        //     .stores
+        //     .get("xh_id")
+        //     .ok_or(Error::MissingField("xh_id"))?;
 
-        if xh.len() < 8 {
-            error!("xh_id {} 无法提取选课参数", xh);
-            return Err(Error::InvalidXhId);
-        }
+        // if xh.len() < 8 {
+        //     error!("xh_id {} 无法提取选课参数", xh);
+        //     return Err(Error::InvalidXhId);
+        // }
 
         #[derive(Serialize, Debug)]
         struct SelectCouresData<'a> {
@@ -34,11 +34,15 @@ impl Client {
             jxb_ids: &'a str,
             kch_id: &'a str,
             qz: &'a str, // 0 定值
+            // <input type="hidden" name="njdm_id" id="njdm_id" value="">
             njdm_id: &'a str,
+            // <input type="hidden" name="zyh_id" id="zyh_id" value="">
             zyh_id: &'a str,
         }
 
         trace!("发送请求选课");
+
+        // debug!("{},{}", self.use_store("njdm_id"), self.use_store("zyh_id"));
 
         let res = self
             .post(&Client::SELECT_COURSE_URL)
@@ -46,8 +50,8 @@ impl Client {
                 jxb_ids: course_do_id,
                 kch_id: course_id,
                 qz: "0",
-                njdm_id: &xh[0..4],
-                zyh_id: &xh[4..8],
+                njdm_id: self.use_store("njdm_id"),
+                zyh_id: self.use_store("zhy_id"),
             })
             .send()
             .await?;
@@ -75,6 +79,8 @@ impl Client {
 /// { flag: "0", msg: Some("一门课程只能选一个教学班，不可再选！") }
 ///
 /// { flag: "0", msg: Some("超过体育分项本学期本专业最高选课门次限制，不可选！") }
+///
+/// { flag: "0", msg: Some("超过通识选修课本学期本专业最高选课门次限制，不可选！") }
 #[cfg_attr(
     feature = "__pyo3",
     cfg_attr(test, pyo3_stub_gen::derive::gen_stub_pyclass),

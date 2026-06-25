@@ -12,9 +12,9 @@ pub enum Error {
     #[error("[{0}] 找不到教学班")]
     JxbNotFound(&'static str),
 
-    #[error("[select_course] 学号长度不足")]
-    InvalidXhId,
-
+    // #[error("[select_course] 学号长度不足")]
+    // InvalidXhId,
+    //
     #[error("Login failed")]
     LoginFailed,
 
