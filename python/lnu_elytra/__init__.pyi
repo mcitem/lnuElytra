@@ -69,6 +69,8 @@ class SelectCourseResponse:
     { flag: "0", msg: Some("一门课程只能选一个教学班，不可再选！") }
     
     { flag: "0", msg: Some("超过体育分项本学期本专业最高选课门次限制，不可选！") }
+    
+    { flag: "0", msg: Some("超过通识选修课本学期本专业最高选课门次限制，不可选！") }
     """
     @property
     def flag(self) -> builtins.str: ...
