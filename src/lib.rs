@@ -37,26 +37,32 @@ pub struct Client {
     pub cookie_store: Arc<CookieStoreRwLock>,
 }
 
+macro_rules! def {
+    (u $name:ident = $value:literal; $($rest:tt)*) => {
+        const $name: &str = $value;
+        def!($($rest)*);
+    };
+    (s $name:ident = $sel:literal; $($rest:tt)*) => {
+        const $name: LazyLock<Selector> = LazyLock::new(|| Selector::parse($sel).unwrap());
+        def!($($rest)*);
+    };
+    () => {};
+}
+
 impl Client {
-    const LOGIN_URL: &str = "/xtgl/login_slogin.html";
-    const PUBLIC_KEY_URL: &str = "/xtgl/login_getPublicKey.html";
-
-    const SELECT_COURSE_URL: &str = "/xsxk/zzxkyzb_xkBcZyZzxkYzb.html?gnmkdm=N253512";
-    const SELECT_COURSE_HTML_URL: &str = "/xsxk/zzxkyzb_cxZzxkYzbIndex.html?gnmkdm=N253512";
-    const SELECT_COURSE_DISPLAY_URL: &str = "/xsxk/zzxkyzb_cxZzxkYzbDisplay.html?gnmkdm=N253512";
-    const SELECT_COURSE_PART_DISPLAY_URL: &str =
-        "/xsxk/zzxkyzb_cxZzxkYzbPartDisplay.html?gnmkdm=N253512";
-    const SELECT_COURSE_QUERY_DO_WITH_COURSE_ID_URL: &str =
-        "/xsxk/zzxkyzbjk_cxJxbWithKchZzxkYzb.html?gnmkdm=N253512";
-
-    const S_CSRFTOKEN: LazyLock<Selector> =
-        LazyLock::new(|| Selector::parse("#csrftoken").unwrap());
-    const S_SESSION_USER_KEY: LazyLock<Selector> =
-        LazyLock::new(|| Selector::parse("#sessionUserKey").unwrap());
-    const S_INPUT_HIDDENT: LazyLock<Selector> =
-        LazyLock::new(|| Selector::parse("input[type='hidden']").unwrap());
-    const S_INPUT_MMSFJM: LazyLock<Selector> =
-        LazyLock::new(|| Selector::parse("input[type='hidden'][name='mmsfjm']").unwrap());
+    def! {
+    u LOGIN_URL = "/xtgl/login_slogin.html";
+    u PUBLIC_KEY_URL = "/xtgl/login_getPublicKey.html";
+    u SELECT_COURSE_URL = "/xsxk/zzxkyzb_xkBcZyZzxkYzb.html?gnmkdm=N253512";
+    u SELECT_COURSE_HTML_URL = "/xsxk/zzxkyzb_cxZzxkYzbIndex.html?gnmkdm=N253512";
+    u SELECT_COURSE_DISPLAY_URL = "/xsxk/zzxkyzb_cxZzxkYzbDisplay.html?gnmkdm=N253512";
+    u SELECT_COURSE_PART_DISPLAY_URL = "/xsxk/zzxkyzb_cxZzxkYzbPartDisplay.html?gnmkdm=N253512";
+    u SELECT_COURSE_QUERY_DO_WITH_COURSE_ID_URL = "/xsxk/zzxkyzbjk_cxJxbWithKchZzxkYzb.html?gnmkdm=N253512";
+    s S_CSRFTOKEN = "#csrftoken";
+    s S_SESSION_USER_KEY = "#sessionUserKey";
+    s S_INPUT_HIDDENT = "input[type='hidden']";
+    s S_INPUT_MMSFJM = "input[type='hidden'][name='mmsfjm']";
+    }
 
     pub fn new() -> Self {
         Self::new_with_base(Url::parse("http://jw.lingnan.edu.cn").unwrap())
