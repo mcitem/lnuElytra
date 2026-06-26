@@ -51,13 +51,13 @@ macro_rules! def {
 
 impl Client {
     def! {
-    u LOGIN_URL = "/xtgl/login_slogin.html";
-    u PUBLIC_KEY_URL = "/xtgl/login_getPublicKey.html";
-    u SELECT_COURSE_URL = "/xsxk/zzxkyzb_xkBcZyZzxkYzb.html?gnmkdm=N253512";
-    u SELECT_COURSE_HTML_URL = "/xsxk/zzxkyzb_cxZzxkYzbIndex.html?gnmkdm=N253512";
-    u SELECT_COURSE_DISPLAY_URL = "/xsxk/zzxkyzb_cxZzxkYzbDisplay.html?gnmkdm=N253512";
-    u SELECT_COURSE_PART_DISPLAY_URL = "/xsxk/zzxkyzb_cxZzxkYzbPartDisplay.html?gnmkdm=N253512";
-    u SELECT_COURSE_QUERY_DO_WITH_COURSE_ID_URL = "/xsxk/zzxkyzbjk_cxJxbWithKchZzxkYzb.html?gnmkdm=N253512";
+    u LOGIN_URL = "xtgl/login_slogin.html";
+    u PUBLIC_KEY_URL = "xtgl/login_getPublicKey.html";
+    u SELECT_COURSE_URL = "xsxk/zzxkyzb_xkBcZyZzxkYzb.html?gnmkdm=N253512";
+    u SELECT_COURSE_HTML_URL = "xsxk/zzxkyzb_cxZzxkYzbIndex.html?gnmkdm=N253512";
+    u SELECT_COURSE_DISPLAY_URL = "xsxk/zzxkyzb_cxZzxkYzbDisplay.html?gnmkdm=N253512";
+    u SELECT_COURSE_PART_DISPLAY_URL = "xsxk/zzxkyzb_cxZzxkYzbPartDisplay.html?gnmkdm=N253512";
+    u SELECT_COURSE_QUERY_DO_WITH_COURSE_ID_URL = "xsxk/zzxkyzbjk_cxJxbWithKchZzxkYzb.html?gnmkdm=N253512";
     s S_CSRFTOKEN = "#csrftoken";
     s S_SESSION_USER_KEY = "#sessionUserKey";
     s S_INPUT_HIDDENT = "input[type='hidden']";
