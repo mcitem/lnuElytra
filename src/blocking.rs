@@ -15,7 +15,7 @@ impl Client {
         }
     }
 
-    pub fn new_with_base(backend: &str) -> Result<Self, url::ParseError> {
+    pub fn new_with_base(backend: &str) -> R<Self> {
         Ok(Self {
             client: crate::Client::new_with_base(backend.parse()?),
             runtime: Runtime::new().unwrap(),

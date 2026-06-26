@@ -24,9 +24,8 @@ pub mod lnu_elytra {
             Ok(Self(match base {
                 None => blocking::Client::new(),
                 Some(base) => {
-                    let base: Result<_, PyErr> = blocking::Client::new_with_base(&base)
-                        .map_err(crate::Error::UrlParseError)
-                        .map_err(Into::into);
+                    let base: Result<_, PyErr> =
+                        blocking::Client::new_with_base(&base).map_err(Into::into);
                     base?
                 }
             }))
