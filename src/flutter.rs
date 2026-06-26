@@ -8,18 +8,14 @@ pub struct FError {
 }
 
 pub enum FErrorKind {
-    UrlParseError,
+    LoginFailed,
     NotyetStarted,
     JxbNotFound,
-    // InvalidXhId,
-    LoginFailed,
     Missing,
-    MissingField,
-    Reqwest,
     Rsa,
-    // ParseRsaKeyError,
+    Reqwest,
+    UrlParseError,
     Base64Decode,
-    SystemTime,
 }
 
 impl From<crate::Error> for FError {
@@ -27,18 +23,14 @@ impl From<crate::Error> for FError {
         Self {
             error: format!("{e:?}"),
             kind: match e {
-                crate::Error::UrlParseError(_) => FErrorKind::UrlParseError,
+                crate::Error::LoginFailed => FErrorKind::LoginFailed,
                 crate::Error::NotyetStarted => FErrorKind::NotyetStarted,
                 crate::Error::JxbNotFound(_) => FErrorKind::JxbNotFound,
-                // crate::Error::InvalidXhId => FErrorKind::InvalidXhId,
-                crate::Error::LoginFailed => FErrorKind::LoginFailed,
                 crate::Error::Missing(_) => FErrorKind::Missing,
-                crate::Error::MissingField(_) => FErrorKind::MissingField,
-                crate::Error::Reqwest(_) => FErrorKind::Reqwest,
                 crate::Error::Rsa(_) => FErrorKind::Rsa,
-                // crate::Error::ParseRsaKeyError(_) => FErrorKind::ParseRsaKeyError,
+                crate::Error::Reqwest(_) => FErrorKind::Reqwest,
+                crate::Error::UrlParseError(_) => FErrorKind::UrlParseError,
                 crate::Error::Base64Decode(_) => FErrorKind::Base64Decode,
-                crate::Error::SystemTime(_) => FErrorKind::SystemTime,
             },
         }
     }

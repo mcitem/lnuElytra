@@ -143,7 +143,7 @@ impl Client {
         self.request(Method::POST, url)
     }
     pub(crate) fn request(&self, method: Method, url: &str) -> R<RequestBuilder> {
-        let url = self.base_url.join(url).map_err(Error::UrlParseError)?;
+        let url = self.base_url.join(url)?;
 
         #[allow(unused_mut)]
         let mut req = self.client.request(method, url);

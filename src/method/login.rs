@@ -1,5 +1,3 @@
-use std::time::{SystemTime, UNIX_EPOCH};
-
 use serde::Serialize;
 
 use crate::{
@@ -62,7 +60,7 @@ impl Client {
 
         debug!("登录数据: {:?}", login_data);
 
-        let timestamp = SystemTime::now().duration_since(UNIX_EPOCH)?.as_millis();
+        let timestamp = chrono::Utc::now().timestamp_millis();
 
         trace!("发送登录请求");
 
