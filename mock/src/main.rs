@@ -4,7 +4,6 @@ use axum::{
     response::{Html, IntoResponse},
     routing::{get, post},
 };
-use rand::Rng;
 use serde::Deserialize;
 use serde_json::json;
 use tokio::net::TcpListener;
@@ -155,8 +154,7 @@ async fn query_do_with_course_id() -> impl IntoResponse {
 }
 
 async fn select_course() -> impl IntoResponse {
-    let mut rng = rand::thread_rng();
-    let choice = rng.gen_range(0..5);
+    let choice = rand::random_range(0..5);
     match choice {
         1 => Json(json!({
             "flag": "0",

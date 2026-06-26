@@ -9,5 +9,5 @@ lnu-elytra = { features = [
     "cookie_override",
     "blocking",
 ], workspace = true }
-tokio = { version = "1.50.0", features = ["macros", "rt-multi-thread"] }
+tokio = { version = "1.52.3", features = ["macros", "rt-multi-thread"] }
 tracing-subscriber = { version = "0.3.22", features = ["env-filter"] }
