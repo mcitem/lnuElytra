@@ -60,12 +60,4 @@ impl FClient {
             pub async fn select_course(&self, course_id: &str, course_do_id: &str) -> Result<crate::SelectCourseResponse, FError>;
         }
     }
-
-    #[cfg(feature = "cookie_override")]
-    delegate! {
-        to self.0 {
-           pub fn set_cookie_override(&mut self, cookie: String);
-           pub fn clear_cookie_override(&mut self);
-        }
-    }
 }

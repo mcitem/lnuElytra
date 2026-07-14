@@ -148,11 +148,6 @@ impl Client {
         #[allow(unused_mut)]
         let mut req = self.client.request(method, url);
 
-        #[cfg(feature = "cookie_override")]
-        if let Some(cookie) = &self.cookie_override {
-            req = req.header(reqwest::header::COOKIE, cookie);
-        }
-
         Ok(req)
     }
     pub(crate) fn store(&mut self, key: &str, value: &str) {
@@ -162,17 +157,6 @@ impl Client {
     pub(crate) fn use_store(&self, key: &str) -> &String {
         static EMPTY_STRING: String = String::new();
         self.stores.get(key).unwrap_or(&EMPTY_STRING)
-    }
-}
-
-#[cfg(feature = "cookie_override")]
-impl Client {
-    pub fn set_cookie_override(&mut self, cookie: String) {
-        self.cookie_override = Some(cookie);
-    }
-
-    pub fn clear_cookie_override(&mut self) {
-        self.cookie_override = None;
     }
 }
 
@@ -192,16 +176,7 @@ impl Client {
             .map(|x| format!("{}={}", x.name(), x.value()))
             .collect::<Vec<String>>();
         match res.len() {
-            0 => {
-                #[cfg(feature = "cookie_override")]
-                match self.cookie_override {
-                    Some(ref cookie) => Some(cookie.clone()),
-                    None => None,
-                }
-
-                #[cfg(not(feature = "cookie_override"))]
-                None
-            }
+            0 => None,
             _ => Some(res.join("; ")),
         }
     }

@@ -31,8 +31,6 @@ pub struct Client {
     base_url: Url,
     client: reqwest::Client,
     stores: HashMap<String, String>, // input[type="hidden"]
-    #[cfg(feature = "cookie_override")]
-    cookie_override: Option<String>, // 覆盖cookie
     #[cfg(feature = "reqwest_cookie_store")]
     pub cookie_store: Arc<CookieStoreRwLock>,
 }
@@ -86,8 +84,6 @@ impl Client {
             base_url: backend,
             client: client.build().unwrap(),
             stores: HashMap::new(),
-            #[cfg(feature = "cookie_override")]
-            cookie_override: None,
             #[cfg(feature = "reqwest_cookie_store")]
             cookie_store,
         }
