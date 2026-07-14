@@ -25,6 +25,8 @@ __pyo3 = [
     "dep:pyo3-tracing-subscriber",
     "dep:pyo3-async-runtimes",
     "blocking",
+    "converter",
+    "reqwest_cookie_store",
 ]
 __flutter = ["dep:delegate", "converter", "reqwest_cookie_store"]
 

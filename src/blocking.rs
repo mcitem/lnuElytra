@@ -44,6 +44,17 @@ impl Client {
     }
 }
 
+#[cfg(feature = "reqwest_cookie_store")]
+impl Client {
+    pub fn insert_cookie(&mut self, cookie: &str) -> R {
+        self.client.insert_cookie(cookie)
+    }
+
+    pub fn clear_cookie(&mut self) {
+        self.client.clear_cookie();
+    }
+}
+
 impl Course {
     pub fn try_select_0_blocking(&self, client: &Client) -> R<SelectCourseResponse> {
         client.runtime.block_on(self.try_select_0(&client.client))

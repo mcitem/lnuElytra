@@ -64,4 +64,13 @@ impl FClient {
             pub async fn select_course(&self, course_id: &str, course_do_id: &str) -> Result<crate::SelectCourseResponse, FError>;
         }
     }
+
+    #[cfg(feature = "reqwest_cookie_store")]
+    delegate! {
+        to self.0 {
+            #[expr($.map_err(Into::into))]
+            pub fn insert_cookie(&mut self, cookie: &str) -> Result<(), FError>;
+            pub fn clear_cookie(&mut self);
+        }
+    }
 }

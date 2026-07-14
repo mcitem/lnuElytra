@@ -54,6 +54,16 @@ pub mod lnu_elytra {
         ) -> R<SelectCourseResponse> {
             self.0.select_course(course_id, course_do_id)
         }
+
+        #[cfg(feature = "reqwest_cookie_store")]
+        pub fn insert_cookie(&mut self, cookie: String) -> R {
+            self.0.insert_cookie(&cookie)
+        }
+
+        #[cfg(feature = "reqwest_cookie_store")]
+        pub fn clear_cookie(&mut self) {
+            self.0.clear_cookie();
+        }
     }
 
     #[cfg_attr(test, pyo3_stub_gen::derive::gen_stub_pymethods)]
@@ -164,6 +174,27 @@ pub mod lnu_elytra {
                     .map_err::<PyErr, _>(Into::into)?)
             })
         }
+
+        #[cfg(feature = "reqwest_cookie_store")]
+        fn insert_cookie<'a>(&self, py: Python<'a>, cookie: String) -> PyResult<Bound<'a, PyAny>> {
+            let client = self.0.clone();
+            pyo3_async_runtimes::tokio::future_into_py(py, async move {
+                let client = client.read().await;
+                Ok(client
+                    .insert_cookie(&cookie)
+                    .map_err::<PyErr, _>(Into::into)?)
+            })
+        }
+
+        #[cfg(feature = "reqwest_cookie_store")]
+        fn clear_cookie<'a>(&self, py: Python<'a>) -> PyResult<Bound<'a, PyAny>> {
+            let client = self.0.clone();
+            pyo3_async_runtimes::tokio::future_into_py(py, async move {
+                let client = client.read().await;
+                client.clear_cookie();
+                Ok(())
+            })
+        }
     }
 
     #[cfg(test)]
@@ -176,6 +207,17 @@ pub mod lnu_elytra {
                 def init(self) -> typing.Awaitable[None]: ...
                 def fetch_courses(self, q: builtins.str) -> typing.Awaitable[Course]: ...
                 def select_course(self, course_id: builtins.str, course_do_id: builtins.str) -> typing.Awaitable[SelectCourseResponse]: ...
+            "#
+        }
+    }
+
+    #[cfg(all(test, feature = "reqwest_cookie_store"))]
+    pyo3_stub_gen::inventory::submit! {
+        pyo3_stub_gen::derive::gen_methods_from_python! {
+            r#"
+            class AsyncClient:
+                def insert_cookie(self, cookie: builtins.str) -> typing.Awaitable[None]: ...
+                def clear_cookie(self) -> typing.Awaitable[None]: ...
             "#
         }
     }
