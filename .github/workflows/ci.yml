@@ -15,7 +15,7 @@ jobs:
           cargo check --all-features
           cargo check -F tracing
           cargo check -F blocking
-          cargo check -F cookie_override
+          cargo check -F converter
           cargo check -F reqwest_cookie_store
           cargo check -F __pyo3
           cargo check -F __flutter
@@ -29,7 +29,7 @@ jobs:
           cargo build --all-features
           cargo build -F tracing
           cargo build -F blocking
-          cargo build -F cookie_override
+          cargo build -F converter
           cargo build -F reqwest_cookie_store
           cargo build -F __pyo3
           cargo build -F __flutter
@@ -43,7 +43,7 @@ jobs:
           cargo test --all-features
           cargo test -F tracing
           cargo test -F blocking
-          cargo test -F cookie_override
+          cargo test -F converter
           cargo test -F reqwest_cookie_store
           cargo test -F __pyo3
           cargo test -F __flutter

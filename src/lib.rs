@@ -20,6 +20,9 @@ pub use method::SelectCourseResponse;
 
 use reqwest::Url;
 
+#[cfg(feature = "converter")]
+use crate::error::R;
+
 #[cfg(feature = "reqwest_cookie_store")]
 use {reqwest_cookie_store::CookieStoreRwLock, std::sync::Arc};
 
@@ -33,6 +36,8 @@ pub struct Client {
     stores: HashMap<String, String>, // input[type="hidden"]
     #[cfg(feature = "reqwest_cookie_store")]
     pub cookie_store: Arc<CookieStoreRwLock>,
+    #[cfg(feature = "converter")]
+    converter: fn(Url) -> R<Url>,
 }
 
 macro_rules! def {
@@ -49,6 +54,7 @@ macro_rules! def {
 
 impl Client {
     def! {
+    u JZIOTLOGIN_URL = "sso/jziotlogin";
     u LOGIN_URL = "xtgl/login_slogin.html";
     u PUBLIC_KEY_URL = "xtgl/login_getPublicKey.html";
     u SELECT_COURSE_URL = "xsxk/zzxkyzb_xkBcZyZzxkYzb.html?gnmkdm=N253512";
@@ -86,6 +92,8 @@ impl Client {
             stores: HashMap::new(),
             #[cfg(feature = "reqwest_cookie_store")]
             cookie_store,
+            #[cfg(feature = "converter")]
+            converter: |url| Ok(url),
         }
     }
 
@@ -93,4 +101,16 @@ impl Client {
         self.base_url = backend;
         self
     }
+
+    #[cfg(feature = "converter")]
+    pub fn set_converter(mut self, converter: fn(Url) -> R<Url>) -> Self {
+        self.converter = converter;
+        self
+    }
+}
+
+#[cfg(feature = "converter")]
+pub fn csvpn_converter(url: Url) -> R<Url> {
+    let config = webvpn_converter::Config::default();
+    Ok(config.encrypt_url(url)?)
 }

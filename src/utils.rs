@@ -7,7 +7,7 @@ use serde::{Deserialize, de::DeserializeOwned};
 use crate::{
     Client,
     error::{Error, R},
-    utils::macros::error,
+    utils::macros::{debug, error},
 };
 
 pub(crate) mod macros {
@@ -145,6 +145,11 @@ impl Client {
     pub(crate) fn request(&self, method: Method, url: &str) -> R<RequestBuilder> {
         let url = self.base_url.join(url)?;
 
+        #[cfg(feature = "converter")]
+        let url = (self.converter)(url)?;
+
+        debug!("request: {} {}", method, url);
+
         #[allow(unused_mut)]
         let mut req = self.client.request(method, url);
 
@@ -171,6 +176,7 @@ impl Client {
                 "X-LB" => Some(x),
                 "zstack_cookie" => Some(x),
                 "route" => Some(x),
+                "wengine_vpn_ticketcsvpn_lingnan_edu_cn" => Some(x),
                 _ => None,
             })
             .map(|x| format!("{}={}", x.name(), x.value()))
@@ -179,5 +185,27 @@ impl Client {
             0 => None,
             _ => Some(res.join("; ")),
         }
+    }
+
+    pub fn insert_cookie(&self, cookie: &str) -> R {
+        use crate::utils::macros::trace;
+
+        let mut store = self.cookie_store.write().unwrap();
+
+        let url = &self.base_url;
+
+        #[cfg(feature = "converter")]
+        let url = (self.converter)(url.join("/")?)?.join("/")?;
+
+        trace!("url: {url}, insert cookie: {cookie}");
+
+        store.parse(cookie, &url)?;
+
+        Ok(())
+    }
+
+    pub fn clear_cookie(&self) {
+        let mut store = self.cookie_store.write().unwrap();
+        store.clear();
     }
 }

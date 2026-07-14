@@ -16,6 +16,8 @@ pub enum FErrorKind {
     Reqwest,
     UrlParseError,
     Base64Decode,
+    CookieError,
+    ConverterError,
 }
 
 impl From<crate::Error> for FError {
@@ -31,6 +33,8 @@ impl From<crate::Error> for FError {
                 crate::Error::Reqwest(_) => FErrorKind::Reqwest,
                 crate::Error::UrlParseError(_) => FErrorKind::UrlParseError,
                 crate::Error::Base64Decode(_) => FErrorKind::Base64Decode,
+                crate::Error::CookieError(_) => FErrorKind::CookieError,
+                crate::Error::ConverterError(_) => FErrorKind::ConverterError,
             },
         }
     }

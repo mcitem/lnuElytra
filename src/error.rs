@@ -25,6 +25,13 @@ pub enum Error {
 
     #[error("Base64 decode error: {0}")]
     Base64Decode(#[from] base64::DecodeError),
+
+    #[error("Cookie error: {0}")]
+    CookieError(#[from] cookie_store::CookieError),
+
+    #[cfg(feature = "converter")]
+    #[error("Converter error: {0}")]
+    ConverterError(#[from] webvpn_converter::Error),
 }
 
 pub type R<T = ()> = Result<T, Error>;
