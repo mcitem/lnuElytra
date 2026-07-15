@@ -72,7 +72,12 @@ impl Client {
         Self::new_with_base(Url::parse("http://jw.lingnan.edu.cn").unwrap())
     }
 
-    pub fn new_with_base(backend: Url) -> Self {
+    pub fn new_with_base(mut backend: Url) -> Self {
+        if let Some(path) = backend.path().to_owned().strip_suffix(&Client::LOGIN_URL) {
+            backend.set_path(&path);
+            backend.set_query(None);
+        }
+
         #[cfg(feature = "reqwest_cookie_store")]
         let cookie_store = Arc::new(CookieStoreRwLock::default());
 

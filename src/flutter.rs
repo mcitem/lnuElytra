@@ -17,6 +17,7 @@ pub enum FErrorKind {
     UrlParseError,
     Base64Decode,
     CookieError,
+    #[cfg(feature = "converter")]
     ConverterError,
 }
 
@@ -34,6 +35,7 @@ impl From<crate::Error> for FError {
                 crate::Error::UrlParseError(_) => FErrorKind::UrlParseError,
                 crate::Error::Base64Decode(_) => FErrorKind::Base64Decode,
                 crate::Error::CookieError(_) => FErrorKind::CookieError,
+                #[cfg(feature = "converter")]
                 crate::Error::ConverterError(_) => FErrorKind::ConverterError,
             },
         }
