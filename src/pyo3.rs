@@ -55,6 +55,10 @@ pub mod lnu_elytra {
             self.0.select_course(course_id, course_do_id)
         }
 
+        pub fn ver(&self) -> R<Option<String>> {
+            self.0.ver()
+        }
+
         #[cfg(feature = "reqwest_cookie_store")]
         pub fn insert_cookie(&mut self, cookie: String) -> R {
             self.0.insert_cookie(&cookie)
@@ -175,6 +179,14 @@ pub mod lnu_elytra {
             })
         }
 
+        fn ver<'a>(&self, py: Python<'a>) -> PyResult<Bound<'a, PyAny>> {
+            let client = self.0.clone();
+            pyo3_async_runtimes::tokio::future_into_py(py, async move {
+                let client = client.read().await;
+                Ok(client.ver().await.map_err::<PyErr, _>(Into::into)?)
+            })
+        }
+
         #[cfg(feature = "reqwest_cookie_store")]
         fn insert_cookie<'a>(&self, py: Python<'a>, cookie: String) -> PyResult<Bound<'a, PyAny>> {
             let client = self.0.clone();
@@ -207,6 +219,7 @@ pub mod lnu_elytra {
                 def init(self) -> typing.Awaitable[None]: ...
                 def fetch_courses(self, q: builtins.str) -> typing.Awaitable[Course]: ...
                 def select_course(self, course_id: builtins.str, course_do_id: builtins.str) -> typing.Awaitable[SelectCourseResponse]: ...
+                def ver(self) -> typing.Awaitable[typing.Optional[builtins.str]]: ...
             "#
         }
     }

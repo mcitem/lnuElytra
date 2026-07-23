@@ -42,6 +42,10 @@ impl Client {
         self.runtime
             .block_on(self.client.select_course(course_id, course_do_id))
     }
+
+    pub fn ver(&self) -> R<Option<String>> {
+        self.runtime.block_on(self.client.ver())
+    }
 }
 
 #[cfg(feature = "reqwest_cookie_store")]

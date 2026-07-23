@@ -64,6 +64,7 @@ impl FClient {
             pub async fn init(&mut self) -> Result<(), FError>;
             pub async fn fetch_courses(&self, q: &str) -> Result<crate::Course, FError>;
             pub async fn select_course(&self, course_id: &str, course_do_id: &str) -> Result<crate::SelectCourseResponse, FError>;
+            pub async fn ver(&self) -> Result<Option<String>, FError>;
         }
     }
 
