@@ -1,7 +1,7 @@
 支持以下系统
 
-| Android | Windows | HarmoneyOS | macos | ios |
-| ------- | ------- | ---------- | ----- | --- |
+| Android | Windows | HarmonyOS | macos | ios |
+| ------- | ------- | --------- | ----- | --- |
 
 <img src="../assets/hmos.jpg" width=75% />
 

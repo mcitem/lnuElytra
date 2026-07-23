@@ -72,8 +72,8 @@ impl FClient {
     delegate! {
         to self.0 {
             #[expr($.map_err(Into::into))]
-            pub fn insert_cookie(&mut self, cookie: &str) -> Result<(), FError>;
-            pub fn clear_cookie(&mut self);
+            pub fn insert_cookie(&self, cookie: &str) -> Result<(), FError>;
+            pub fn clear_cookie(&self);
         }
     }
 }

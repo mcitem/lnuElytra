@@ -246,11 +246,10 @@ pub mod lnu_elytra {
             let client = client.0.clone();
             pyo3_async_runtimes::tokio::future_into_py(py, async move {
                 let client = client.read().await;
-                course
+                Ok(course
                     .try_select_0(&client)
                     .await
-                    .map_err::<PyErr, _>(Into::into)?;
-                Ok(())
+                    .map_err::<PyErr, _>(Into::into)?)
             })
         }
 
@@ -264,11 +263,10 @@ pub mod lnu_elytra {
             let client = client.0.clone();
             pyo3_async_runtimes::tokio::future_into_py(py, async move {
                 let client = client.read().await;
-                course
+                Ok(course
                     .try_select_by_time(&client, &q)
                     .await
-                    .map_err::<PyErr, _>(Into::into)?;
-                Ok(())
+                    .map_err::<PyErr, _>(Into::into)?)
             })
         }
     }

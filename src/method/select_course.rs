@@ -51,7 +51,7 @@ impl Client {
                 kch_id: course_id,
                 qz: "0",
                 njdm_id: self.use_store("njdm_id"),
-                zyh_id: self.use_store("zhy_id"),
+                zyh_id: self.use_store("zyh_id"),
             })
             .send()
             .await?;

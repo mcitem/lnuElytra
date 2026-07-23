@@ -1,6 +1,7 @@
 from lnu_elytra.tracing import Tracing, GlobalTracingConfig, BatchConfig, subscriber, layers
 from lnu_elytra import Client;
 import asyncio
+import time
 
 cfg = GlobalTracingConfig(
     BatchConfig(
@@ -36,7 +37,7 @@ def main():
             client.init()
         except Exception as e:
             print(f"初始化失败，正在重试：{e}")
-            asyncio.sleep(1)
+            time.sleep(1)
             continue
         print("初始化成功")
         break
@@ -44,15 +45,16 @@ def main():
     for tg in tgs:
         while True:
             try:
-                result = client.select_course(tg)
+                fetch = client.fetch_course(tg)
+                result = client.select_course(fetch.kch_id,fetch.jxb[0].do_id)
                 if result.flag == "1":
-                    print(f"选课成功：{result.message}")
+                    print(f"选课成功：{result.msg}")
                 else:
-                    print(f"选课失败：{result.message}")
+                    print(f"选课失败：{result.msg}")
                     continue
             except Exception as e:
                 print(f"选课失败：{e}")
-                asyncio.sleep(1)
+                time.sleep(1)
                 continue
             break
 

@@ -17,7 +17,7 @@ client = Client()
 client.login("账号", "密码")
 client.init()
 # 教学班示例：(2025-2026-2)-77101504-02
-# 使用精确的教学班查询能能减少教务系统返回的数据量，有利于加快抢课。
+# 使用精确的教学班查询能减少教务系统返回的数据量，有利于加快抢课。
 course = client.fetch_course("教学班")
 # 只有当使用精确教学班查询时，才适合直接调用 try_select_o
 course.try_select_0(client)

@@ -37,7 +37,7 @@ async def main():
             await client.init()
         except Exception as e:
             print(f"初始化失败，正在重试：{e}")
-            asyncio.sleep(1)
+            await asyncio.sleep(1)
             continue
         print("初始化成功")
         break
@@ -45,15 +45,16 @@ async def main():
     for tg in tgs:
         while True:
             try:
-                result = await client.select_course(tg)
+                fetch = await client.fetch_courses(tg)
+                result = await client.select_course(fetch.kch_id,fetch.jxb[0].do_id)
                 if result.flag == "1":
-                    print(f"选课成功：{result.message}")
+                    print(f"选课成功：{result.msg}")
                 else:
-                    print(f"选课失败：{result.message}")
+                    print(f"选课失败：{result.msg}")
                     continue
             except Exception as e:
                 print(f"选课失败：{e}")
-                asyncio.sleep(1)
+                await asyncio.sleep(1)
                 continue
             break
 

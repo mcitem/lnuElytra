@@ -30,7 +30,7 @@
 
 #### ~~史山教务系统~~
 
-在你访问教务系统网页时时，你需要加载完网页上的所有资源，浏览器才允许你进行操作，否则就会表现为卡住动不了，包括但不限于
+在你访问教务系统网页时，你需要加载完网页上的所有资源，浏览器才允许你进行操作，否则就会表现为卡住动不了，包括但不限于
 
 - `html` 网页本体
 - `zftal-ui` 正方软件前端ui组件库
@@ -67,6 +67,8 @@ let mut client = Client::new_with_base("http://jwxt.gcc.edu.cn".try_into()?);
 from lnu_elytra import Client
 client = Client(base="http://jwxt.gcc.edu.cn")
 ```
+
+:::
 
 ## 免责声明
 

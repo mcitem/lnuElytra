@@ -50,11 +50,11 @@ impl Client {
 
 #[cfg(feature = "reqwest_cookie_store")]
 impl Client {
-    pub fn insert_cookie(&mut self, cookie: &str) -> R {
+    pub fn insert_cookie(&self, cookie: &str) -> R {
         self.client.insert_cookie(cookie)
     }
 
-    pub fn clear_cookie(&mut self) {
+    pub fn clear_cookie(&self) {
         self.client.clear_cookie();
     }
 }
