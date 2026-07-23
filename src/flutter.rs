@@ -59,7 +59,7 @@ impl FClient {
     delegate! {
         #[expr($.map_err(Into::into))]
         to self.0 {
-            pub async fn login(&mut self, username: &str, password: &str) -> Result<(), FError>;
+            pub async fn login(&mut self, username: &str, password: &str) -> Result<String, FError>;
             pub async fn check_login(&self) -> Result<String, FError>;
             pub async fn init(&mut self) -> Result<(), FError>;
             pub async fn fetch_courses(&self, q: &str) -> Result<crate::Course, FError>;

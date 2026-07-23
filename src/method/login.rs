@@ -11,7 +11,7 @@ use crate::{
 
 impl Client {
     /// 登录
-    pub async fn login(&mut self, username: &str, password: &str) -> R {
+    pub async fn login(&mut self, username: &str, password: &str) -> R<String> {
         info!("正在登录...");
 
         trace!("加载登录页");
@@ -89,6 +89,6 @@ impl Client {
 
         let _ = doc.use_ver();
 
-        Ok(())
+        Ok(u.to_owned())
     }
 }

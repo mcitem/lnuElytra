@@ -22,7 +22,7 @@ impl Client {
         })
     }
 
-    pub fn login(&mut self, username: &str, password: &str) -> R {
+    pub fn login(&mut self, username: &str, password: &str) -> R<String> {
         self.runtime.block_on(self.client.login(username, password))
     }
 

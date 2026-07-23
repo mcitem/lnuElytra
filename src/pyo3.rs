@@ -31,7 +31,7 @@ pub mod lnu_elytra {
             }))
         }
 
-        pub fn login(&mut self, username: &str, password: &str) -> R {
+        pub fn login(&mut self, username: &str, password: &str) -> R<String> {
             self.0.login(username, password)
         }
 
@@ -202,7 +202,7 @@ pub mod lnu_elytra {
         pyo3_stub_gen::derive::gen_methods_from_python! {
             r#"
             class AsyncClient:
-                def login(self, username: builtins.str, password: builtins.str) -> typing.Awaitable[None]: ...
+                def login(self, username: builtins.str, password: builtins.str) -> typing.Awaitable[builtins.str]: ...
                 def check_login(self) -> typing.Awaitable[builtins.str]: ...
                 def init(self) -> typing.Awaitable[None]: ...
                 def fetch_courses(self, q: builtins.str) -> typing.Awaitable[Course]: ...
