@@ -3,6 +3,7 @@ use reqwest::{Method, RequestBuilder, Response};
 use rsa::{BoxedUint, Pkcs1v15Encrypt, RsaPublicKey};
 use scraper::{Html, Selector, selector::ToCss};
 use serde::{Deserialize, de::DeserializeOwned};
+use std::{borrow::Cow, collections::HashMap};
 
 use crate::{
     Client,
@@ -132,6 +133,35 @@ impl UseInputValue for Html {
                 selector.to_css_string()
             )))?;
         Ok(value.into())
+    }
+}
+
+pub trait UseVer {
+    fn use_ver(&self) -> Option<String>;
+}
+
+impl UseVer for Html {
+    fn use_ver(&self) -> Option<String> {
+        let ver = self
+            .select(&Client::S_SCRIPT)
+            .filter_map(|s| s.attr("src"))
+            .filter_map(|s| s.split_once('?').map(|(_, q)| q))
+            .flat_map(|q| url::form_urlencoded::parse(q.as_bytes()))
+            .filter(|(k, _)| k == "ver")
+            .fold(HashMap::<Cow<str>, usize>::new(), |mut m, (_, v)| {
+                *m.entry(v).or_default() += 1;
+                m
+            })
+            .into_iter()
+            .max_by_key(|&(_, c)| c)
+            .map(|(v, _)| v.into_owned());
+
+        #[cfg(feature = "tracing")]
+        if let Some(ref ver) = ver {
+            crate::utils::macros::info!("ver: {}", ver);
+        };
+
+        ver
     }
 }
 

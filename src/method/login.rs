@@ -4,7 +4,7 @@ use crate::{
     Client,
     error::{Error, R},
     utils::{
-        EncPwd, PublicKey, ToHtml, UseInputValue,
+        EncPwd, PublicKey, ToHtml, UseInputValue, UseVer,
         macros::{debug, error, info, trace},
     },
 };
@@ -86,6 +86,8 @@ impl Client {
         }
 
         info!("登录成功");
+
+        let _ = doc.use_ver();
 
         Ok(())
     }

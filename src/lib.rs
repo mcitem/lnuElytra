@@ -66,6 +66,7 @@ impl Client {
     s S_SESSION_USER_KEY = "#sessionUserKey";
     s S_INPUT_HIDDENT = "input[type='hidden']";
     s S_INPUT_MMSFJM = "input[type='hidden'][name='mmsfjm']";
+    s S_SCRIPT = "script";
     }
 
     pub fn new() -> Self {
