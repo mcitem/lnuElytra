@@ -3894,7 +3894,8 @@ dependencies = [
 [[package]]
 name = "webvpn-converter"
 version = "0.1.0"
-source = "git+https://github.com/mcitem/webvpn-converter#11c7c31bcbfa2553f00c8e4327e67c4d6e331603"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "f10f4aa261745de7e9a9b18950ffac452201b3206fe1d083047c182e0030b369"
 dependencies = [
  "aes",
  "cfb-mode",

@@ -118,5 +118,5 @@ impl Client {
 #[cfg(feature = "converter")]
 pub fn csvpn_converter(url: Url) -> R<Url> {
     let config = webvpn_converter::Config::default();
-    Ok(config.encrypt_url(url)?)
+    Ok(config.encrypt_url(&url)?)
 }
