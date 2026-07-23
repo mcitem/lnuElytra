@@ -55,9 +55,17 @@
 
 - [广州商学院](http://jwxt.gcc.edu.cn/xtgl/login_slogin.html)
 
-```rs
+::: code-group
+
+```rs [Rust]
 // 在 广州商学院 抢课（更换教务系统地址
+use lnu_elytra::Client;
 let mut client = Client::new_with_base("http://jwxt.gcc.edu.cn".try_into()?);
+```
+
+```py [Python]
+from lnu_elytra import Client
+client = Client(base="http://jwxt.gcc.edu.cn")
 ```
 
 ## 免责声明
