@@ -29,7 +29,7 @@ impl Client {
         // }
 
         #[derive(Serialize, Debug)]
-        struct SelectCouresData<'a> {
+        struct SelectCourseData<'a> {
             // 选课需要的参数
             jxb_ids: &'a str,
             kch_id: &'a str,
@@ -45,8 +45,8 @@ impl Client {
         // debug!("{},{}", self.use_store("njdm_id"), self.use_store("zyh_id"));
 
         let res = self
-            .post(&def::SELECT_COURSE_URL)?
-            .form(&SelectCouresData {
+            .post(def::SELECT_COURSE_URL)?
+            .form(&SelectCourseData {
                 jxb_ids: course_do_id,
                 kch_id: course_id,
                 qz: "0",

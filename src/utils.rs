@@ -75,7 +75,7 @@ pub trait EncPwd {
 
 impl EncPwd for RsaPublicKey {
     fn enc_pwd(&self, pwd: &str) -> R<String> {
-        let encropy_pwd = self.encrypt(&mut rand::rng(), Pkcs1v15Encrypt, &pwd.as_bytes())?;
+        let encropy_pwd = self.encrypt(&mut rand::rng(), Pkcs1v15Encrypt, pwd.as_bytes())?;
         Ok(BASE64_STANDARD.encode(encropy_pwd))
     }
 }
@@ -86,7 +86,7 @@ pub trait ToJson {
 
 impl ToJson for Response {
     async fn jsonr<T: DeserializeOwned>(self) -> R<T> {
-        if self.url().path().contains(&def::LOGIN_URL) {
+        if self.url().path().contains(def::LOGIN_URL) {
             error!("登录已失效");
             return Err(Error::LoginFailed);
         };
@@ -101,7 +101,7 @@ pub trait ToHtml {
 
 impl ToHtml for Response {
     async fn doc(self) -> R<Html> {
-        if self.url().path().contains(&def::LOGIN_URL) {
+        if self.url().path().contains(def::LOGIN_URL) {
             error!("登录已失效");
             return Err(Error::LoginFailed);
         };
@@ -132,7 +132,7 @@ impl UseInputValue for Html {
                 "{} value",
                 selector.to_css_string()
             )))?;
-        Ok(value.into())
+        Ok(value)
     }
 }
 

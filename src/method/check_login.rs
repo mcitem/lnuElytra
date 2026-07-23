@@ -6,7 +6,7 @@ use crate::{
 
 impl Client {
     pub async fn check_login(&self) -> R<String> {
-        self.get(&def::LOGIN_URL)?
+        self.get(def::LOGIN_URL)?
             .send()
             .await?
             .doc()

@@ -38,7 +38,7 @@ impl Client {
         }
 
         let part_display_data = PartDisplayRequestData {
-            filter_list: q.into(),
+            filter_list: q,
             xbm: self.use_store("xbm"),
             ccdm: self.use_store("ccdm"),
             kklxdm: self.use_store("firstKklxdm"),
@@ -66,7 +66,7 @@ impl Client {
             fn use_first_kch_id(&self) -> R<&String> {
                 Ok(&self
                     .tmp_list
-                    .get(0)
+                    .first()
                     .ok_or(Error::JxbNotFound("~.tmp_list.0"))?
                     .kch_id)
             }
@@ -83,7 +83,7 @@ impl Client {
         trace!("part_display request");
 
         let part_display_res = self
-            .post(&def::SELECT_COURSE_PART_DISPLAY_URL)?
+            .post(def::SELECT_COURSE_PART_DISPLAY_URL)?
             .form(&part_display_data)
             .send()
             .await?
@@ -116,12 +116,12 @@ impl Client {
         }
 
         let query_do_data = QueryDoWithCouresIdRequestData {
-            filter_list: q.into(),
+            filter_list: q,
             xkxqm: self.use_store("xkxqm"),
             xkxnm: self.use_store("xkxnm"),
             xkkz_id: self.use_store("firstXkkzId"),
             bklx_id: self.use_store("bklx_id"),
-            kch_id: &part_display_res.use_first_kch_id()?,
+            kch_id: part_display_res.use_first_kch_id()?,
             njdm_id: self.use_store("njdm_id"),
             xsbj: self.use_store("xsbj"),
             xz: self.use_store("xz"),
@@ -151,7 +151,7 @@ impl Client {
         trace!("query_do request");
 
         let query_do_res = self
-            .post(&def::SELECT_COURSE_QUERY_DO_WITH_COURSE_ID_URL)?
+            .post(def::SELECT_COURSE_QUERY_DO_WITH_COURSE_ID_URL)?
             .form(&query_do_data)
             .send()
             .await?
@@ -160,7 +160,7 @@ impl Client {
 
         debug!("query_do {:#?}", query_do_res);
 
-        let mut returndta = Course {
+        let mut return_data = Course {
             xkkz_id: self
                 .stores
                 .get("firstXkkzId")
@@ -172,7 +172,7 @@ impl Client {
         };
 
         for item in query_do_res {
-            returndta.jxb.push(Jxb {
+            return_data.jxb.push(Jxb {
                 jxb_id: item.jxb_id,
                 do_id: item.do_jxb_id,
                 jsxx: item.jsxx,
@@ -180,14 +180,14 @@ impl Client {
             });
         }
 
-        if returndta.jxb.is_empty() {
+        if return_data.jxb.is_empty() {
             warn!("{} 查询教学班为空", q);
         }
 
         info!("获取课程信息成功");
 
-        debug!("课程信息 {:#?}", returndta);
+        debug!("课程信息 {:#?}", return_data);
 
-        Ok(returndta)
+        Ok(return_data)
     }
 }

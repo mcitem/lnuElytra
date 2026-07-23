@@ -6,7 +6,7 @@ use crate::{
 
 impl Client {
     pub async fn jziotlogin(&mut self) -> R<String> {
-        self.get(&def::JZIOTLOGIN_URL)?
+        self.get(def::JZIOTLOGIN_URL)?
             .send()
             .await?
             ._doc()

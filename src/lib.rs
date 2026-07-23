@@ -123,6 +123,12 @@ impl Client {
     }
 }
 
+impl Default for Client {
+    fn default() -> Self {
+        Self::new()
+    }
+}
+
 #[cfg(feature = "converter")]
 pub fn csvpn_converter(url: Url) -> R<Url> {
     let config = webvpn_converter::Config::default();

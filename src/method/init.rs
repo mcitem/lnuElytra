@@ -12,7 +12,7 @@ impl Client {
         info!("正在获取选课基本参数...");
 
         let index_doc = self
-            .get(&def::SELECT_COURSE_HTML_URL)?
+            .get(def::SELECT_COURSE_HTML_URL)?
             .send()
             .await?
             .doc()
@@ -33,12 +33,12 @@ impl Client {
 
         let display_data = DisplayRequestData {
             xkkz_id: self.stores.get("firstXkkzId").ok_or(Error::NotyetStarted)?,
-            xszxzt: "1".into(),
-            kspage: "1".into(),
+            xszxzt: "1",
+            kspage: "1",
         };
 
         let display_doc = self
-            .post(&def::SELECT_COURSE_DISPLAY_URL)?
+            .post(def::SELECT_COURSE_DISPLAY_URL)?
             .form(&display_data)
             .send()
             .await?

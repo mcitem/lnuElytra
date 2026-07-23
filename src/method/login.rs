@@ -16,7 +16,7 @@ impl Client {
 
         trace!("加载登录页");
 
-        let doc = self.get(&def::LOGIN_URL)?.send().await?._doc().await?;
+        let doc = self.get(def::LOGIN_URL)?.send().await?._doc().await?;
 
         trace!("解析登录页，获取csrftoken");
 
@@ -33,7 +33,7 @@ impl Client {
         } else {
             trace!("获取公钥，使用公钥加密密码");
             Cow::Owned(
-                self.get(&def::PUBLIC_KEY_URL)?
+                self.get(def::PUBLIC_KEY_URL)?
                     .send()
                     .await?
                     .json::<PublicKey>()
@@ -52,7 +52,7 @@ impl Client {
         }
 
         let login_data = LoginData {
-            csrftoken: csrftoken,
+            csrftoken,
             yhm: username,
             mm: &mm,
             language: "zh_CN",
@@ -65,7 +65,7 @@ impl Client {
         trace!("发送登录请求");
 
         let doc = self
-            .post(&def::LOGIN_URL)?
+            .post(def::LOGIN_URL)?
             .query(&[("time", timestamp)])
             .form(&login_data)
             .send()
@@ -73,9 +73,9 @@ impl Client {
             ._doc()
             .await?;
 
-        let u = doc.use_val(&def::S_SESSION_USER_KEY).or_else(|_| {
+        let u = doc.use_val(&def::S_SESSION_USER_KEY).map_err(|_| {
             error!("登录失败，未找到 SESSION_USER_KEY");
-            return Err(Error::LoginFailed);
+            Error::LoginFailed
         })?;
 
         debug!("SESSION_USER_KEY: {}", u);

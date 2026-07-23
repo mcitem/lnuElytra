@@ -37,7 +37,7 @@ impl Course {
     pub async fn try_select_0(&self, i: &Client) -> R<SelectCourseResponse> {
         let do_id = &self
             .jxb
-            .get(0)
+            .first()
             .ok_or(Error::JxbNotFound("try_select_0"))?
             .do_id;
 
@@ -49,19 +49,15 @@ impl Course {
     // 星期四第9-10节{9-16周}
     // 16周
     pub async fn try_select_by_time(&self, i: &Client, q: &str) -> R<SelectCourseResponse> {
-        let coures_id = &self.kch_id;
+        let course_id = &self.kch_id;
 
         let do_id = &self
             .jxb
             .iter()
-            .filter(|x| x.sksj.contains(q))
-            .collect::<Vec<&Jxb>>();
-
-        let do_id = &do_id
-            .get(0)
+            .find(|x| x.sksj.contains(q))
             .ok_or(Error::JxbNotFound("try_select_by_time"))?
             .do_id;
 
-        i.select_course(coures_id, do_id).await
+        i.select_course(course_id, do_id).await
     }
 }
