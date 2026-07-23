@@ -283,7 +283,7 @@ fn gen_stub_info() -> pyo3_stub_gen::Result<()> {
     let stub = lnu_elytra::stub_info()?;
     stub.generate()?;
 
-    pyo3_tracing_subscriber::stubs::write_stub_files(
+    pyo3_tracing_subscriber_build::write_stub_files(
         "lnu_elytra",
         "tracing",
         &stub.python_root.join("lnu_elytra/tracing"),
