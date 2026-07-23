@@ -6,7 +6,7 @@ use serde::{Deserialize, de::DeserializeOwned};
 use std::{borrow::Cow, collections::HashMap};
 
 use crate::{
-    Client,
+    Client, def,
     error::{Error, R},
     utils::macros::{debug, error},
 };
@@ -86,7 +86,7 @@ pub trait ToJson {
 
 impl ToJson for Response {
     async fn jsonr<T: DeserializeOwned>(self) -> R<T> {
-        if self.url().path().contains(&Client::LOGIN_URL) {
+        if self.url().path().contains(&def::LOGIN_URL) {
             error!("登录已失效");
             return Err(Error::LoginFailed);
         };
@@ -101,7 +101,7 @@ pub trait ToHtml {
 
 impl ToHtml for Response {
     async fn doc(self) -> R<Html> {
-        if self.url().path().contains(&Client::LOGIN_URL) {
+        if self.url().path().contains(&def::LOGIN_URL) {
             error!("登录已失效");
             return Err(Error::LoginFailed);
         };
@@ -143,7 +143,7 @@ pub trait UseVer {
 impl UseVer for Html {
     fn use_ver(&self) -> Option<String> {
         let ver = self
-            .select(&Client::S_SCRIPT)
+            .select(&def::S_SCRIPT)
             .filter_map(|s| s.attr("src"))
             .filter_map(|s| s.split_once('?').map(|(_, q)| q))
             .flat_map(|q| url::form_urlencoded::parse(q.as_bytes()))

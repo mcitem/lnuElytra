@@ -1,7 +1,7 @@
 use serde::Serialize;
 
 use crate::{
-    Client,
+    Client, def,
     error::{Error, R},
     utils::{ToHtml, macros::info},
 };
@@ -12,13 +12,13 @@ impl Client {
         info!("正在获取选课基本参数...");
 
         let index_doc = self
-            .get(&Client::SELECT_COURSE_HTML_URL)?
+            .get(&def::SELECT_COURSE_HTML_URL)?
             .send()
             .await?
             .doc()
             .await?;
 
-        for item in index_doc.select(&Client::S_INPUT_HIDDENT) {
+        for item in index_doc.select(&def::S_INPUT_HIDDENT) {
             let name = item.attr("name").unwrap_or("");
             let value = item.attr("value").unwrap_or("");
             self.store(name, value);
@@ -38,14 +38,14 @@ impl Client {
         };
 
         let display_doc = self
-            .post(&Client::SELECT_COURSE_DISPLAY_URL)?
+            .post(&def::SELECT_COURSE_DISPLAY_URL)?
             .form(&display_data)
             .send()
             .await?
             .doc()
             .await?;
 
-        for item in display_doc.select(&Client::S_INPUT_HIDDENT) {
+        for item in display_doc.select(&def::S_INPUT_HIDDENT) {
             let name = item.attr("name").unwrap_or("");
             let value = item.attr("value").unwrap_or("");
             self.store(name, value);

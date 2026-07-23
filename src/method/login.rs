@@ -1,7 +1,7 @@
 use serde::Serialize;
 
 use crate::{
-    Client,
+    Client, def,
     error::{Error, R},
     utils::{
         EncPwd, PublicKey, ToHtml, UseInputValue, UseVer,
@@ -16,16 +16,16 @@ impl Client {
 
         trace!("加载登录页");
 
-        let doc = self.get(&Client::LOGIN_URL)?.send().await?._doc().await?;
+        let doc = self.get(&def::LOGIN_URL)?.send().await?._doc().await?;
 
         trace!("解析登录页，获取csrftoken");
 
-        let csrftoken = doc.use_val(&Client::S_CSRFTOKEN)?;
+        let csrftoken = doc.use_val(&def::S_CSRFTOKEN)?;
 
         debug!("csrftoken: {}", csrftoken);
 
         use std::borrow::Cow;
-        let mm = if let Ok(mmsfjm) = doc.use_val(&Client::S_INPUT_MMSFJM)
+        let mm = if let Ok(mmsfjm) = doc.use_val(&def::S_INPUT_MMSFJM)
             && mmsfjm == "0"
         {
             trace!("mmsfjm == '0'");
@@ -33,7 +33,7 @@ impl Client {
         } else {
             trace!("获取公钥，使用公钥加密密码");
             Cow::Owned(
-                self.get(&Client::PUBLIC_KEY_URL)?
+                self.get(&def::PUBLIC_KEY_URL)?
                     .send()
                     .await?
                     .json::<PublicKey>()
@@ -65,7 +65,7 @@ impl Client {
         trace!("发送登录请求");
 
         let doc = self
-            .post(&Client::LOGIN_URL)?
+            .post(&def::LOGIN_URL)?
             .query(&[("time", timestamp)])
             .form(&login_data)
             .send()
@@ -73,7 +73,7 @@ impl Client {
             ._doc()
             .await?;
 
-        let u = doc.use_val(&Client::S_SESSION_USER_KEY).or_else(|_| {
+        let u = doc.use_val(&def::S_SESSION_USER_KEY).or_else(|_| {
             error!("登录失败，未找到 SESSION_USER_KEY");
             return Err(Error::LoginFailed);
         })?;

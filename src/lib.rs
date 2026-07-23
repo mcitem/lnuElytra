@@ -26,8 +26,7 @@ use crate::error::R;
 #[cfg(feature = "reqwest_cookie_store")]
 use {reqwest_cookie_store::CookieStoreRwLock, std::sync::Arc};
 
-use scraper::Selector;
-use std::{collections::HashMap, sync::LazyLock};
+use std::collections::HashMap;
 
 #[derive(Debug)]
 pub struct Client {
@@ -40,19 +39,22 @@ pub struct Client {
     converter: fn(Url) -> R<Url>,
 }
 
-macro_rules! def {
-    (u $name:ident = $value:literal; $($rest:tt)*) => {
-        const $name: &str = $value;
-        def!($($rest)*);
-    };
-    (s $name:ident = $sel:literal; $($rest:tt)*) => {
-        const $name: LazyLock<Selector> = LazyLock::new(|| Selector::parse($sel).unwrap());
-        def!($($rest)*);
-    };
-    () => {};
-}
+pub mod def {
+    use scraper::Selector;
+    use std::sync::LazyLock;
 
-impl Client {
+    macro_rules! def {
+        (u $name:ident = $value:literal; $($rest:tt)*) => {
+            pub const $name: &str = $value;
+            def!($($rest)*);
+        };
+        (s $name:ident = $sel:literal; $($rest:tt)*) => {
+            pub static $name: LazyLock<Selector> = LazyLock::new(|| Selector::parse($sel).unwrap());
+            def!($($rest)*);
+        };
+        () => {};
+    }
+
     def! {
     u JZIOTLOGIN_URL = "sso/jziotlogin";
     u LOGIN_URL = "xtgl/login_slogin.html";
@@ -68,14 +70,20 @@ impl Client {
     s S_INPUT_MMSFJM = "input[type='hidden'][name='mmsfjm']";
     s S_SCRIPT = "script";
     }
+}
 
+impl Client {
     pub fn new() -> Self {
         Self::new_with_base(Url::parse("http://jw.lingnan.edu.cn").unwrap())
     }
 
     pub fn new_with_base(mut backend: Url) -> Self {
-        if let Some(path) = backend.path().to_owned().strip_suffix(&Client::LOGIN_URL) {
-            backend.set_path(&path);
+        if let Some(path) = backend
+            .path()
+            .to_owned()
+            .strip_suffix(&crate::def::LOGIN_URL)
+        {
+            backend.set_path(path);
             backend.set_query(None);
         }
 
