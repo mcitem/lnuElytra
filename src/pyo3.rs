@@ -60,12 +60,12 @@ pub mod lnu_elytra {
         }
 
         #[cfg(feature = "reqwest_cookie_store")]
-        pub fn insert_cookie(&mut self, cookie: String) -> R {
+        pub fn insert_cookie(&self, cookie: String) -> R {
             self.0.insert_cookie(&cookie)
         }
 
         #[cfg(feature = "reqwest_cookie_store")]
-        pub fn clear_cookie(&mut self) {
+        pub fn clear_cookie(&self) {
             self.0.clear_cookie();
         }
     }
