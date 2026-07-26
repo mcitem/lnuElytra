@@ -234,6 +234,17 @@ impl Client {
         Ok(())
     }
 
+    pub fn insert_cookies(&self, cookies: &str) -> R {
+        for cookie in cookies.split(';') {
+            let cookie = cookie.trim();
+            if cookie.is_empty() {
+                continue;
+            }
+            self.insert_cookie(cookie)?;
+        }
+        Ok(())
+    }
+
     pub fn clear_cookie(&self) {
         let mut store = self.cookie_store.write().unwrap();
         store.clear();

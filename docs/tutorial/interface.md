@@ -153,21 +153,48 @@ ver = client.ver()
 
 ### `insert_cookie(cookie)`
 
-- 用途：向会话中插入 Cookie，便于调试或接管会话
+- 用途：向会话中插入**单条** Cookie，便于调试或接管会话
 - 参数：
-  - `cookie`: Cookie 字符串
+  - `cookie`: Cookie 字符串，整体作为一条 `Set-Cookie` 解析；分号后的内容被视为 Cookie 属性（如 `Path`、`HttpOnly`），而非独立的 Cookie
 - Feature：仅在启用 `reqwest_cookie_store` 时可用
 
 ::: code-group
 
 ```rs [Rust]
-client.insert_cookie("JSESSIONID=xxxx; X-LB=yyyy")?;
-client.insert_cookie("JSESSIONID=xxxx; zstack_cookie=YYY")?;
+client.insert_cookie("JSESSIONID=xxxx")?;
+client.insert_cookie("zstack_cookie=YYY")?;
 ```
 
 ```py [Python]
-client.insert_cookie("JSESSIONID=xxxx; X-LB=yyyy")
-client.insert_cookie("JSESSIONID=xxxx; zstack_cookie=YYY")
+client.insert_cookie("JSESSIONID=xxxx")
+client.insert_cookie("zstack_cookie=YYY")
+```
+
+:::
+
+### `insert_cookies(cookies)`
+
+- 用途：一次性插入**多条** Cookie，便于调试或接管会话
+- 参数：
+  - `cookies`: 以 `;` 分隔的多条 Cookie 字符串，每段作为独立 Cookie 分别插入
+- Feature：仅在启用 `reqwest_cookie_store` 时可用
+
+::: tip insert_cookie vs insert_cookies
+
+- `insert_cookie` 将整个字符串按 `Set-Cookie` 头格式解析，只有第一个 `name=value` 对会被写入，分号之后的部分被当作 Cookie 属性（`Path`、`Domain`、`HttpOnly` 等）忽略。适合插入单条 Cookie 或带属性的完整 `Set-Cookie` 值。
+- `insert_cookies` 先按 `;` 拆分字符串，再逐段调用 `insert_cookie`。适合一次性写入多条 Cookie，例如浏览器 `document.cookie` 或请求头 `Cookie` 的格式：`name1=value1; name2=value2`。
+  :::
+
+::: code-group
+
+```rs [Rust]
+client.insert_cookies("JSESSIONID=xxxx; X-LB=yyyy")?;
+client.insert_cookies("JSESSIONID=xxxx; zstack_cookie=YYY")?;
+```
+
+```py [Python]
+client.insert_cookies("JSESSIONID=xxxx; X-LB=yyyy")
+client.insert_cookies("JSESSIONID=xxxx; zstack_cookie=YYY")
 ```
 
 :::

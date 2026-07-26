@@ -54,6 +54,10 @@ impl Client {
         self.client.insert_cookie(cookie)
     }
 
+    pub fn insert_cookies(&self, cookies: &str) -> R {
+        self.client.insert_cookies(cookies)
+    }
+
     pub fn clear_cookie(&self) {
         self.client.clear_cookie();
     }

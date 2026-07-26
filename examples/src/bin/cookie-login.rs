@@ -5,8 +5,11 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
     // client.login("账号", "密码").await?;
     // 通过cookie登录
 
-    // client.insert_cookie("JSESSIONID=XXX; X-LB=YYY".into())?;
-    client.insert_cookie("JSESSIONID=XXX; zstack_cookie=YYY".into())?;
+    // insert_cookie: 整条字符串作为 Set-Cookie 解析，仅写入第一条 Cookie
+    // client.insert_cookie("JSESSIONID=XXX")?;
+
+    // insert_cookies: 按 ; 拆分，逐条写入，适合浏览器复制的多条 Cookie
+    client.insert_cookies("JSESSIONID=XXX; zstack_cookie=YYY")?;
 
     client.check_login().await?;
 

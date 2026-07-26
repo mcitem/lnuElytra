@@ -65,6 +65,11 @@ pub mod lnu_elytra {
         }
 
         #[cfg(feature = "reqwest_cookie_store")]
+        pub fn insert_cookies(&self, cookies: String) -> R {
+            self.0.insert_cookies(&cookies)
+        }
+
+        #[cfg(feature = "reqwest_cookie_store")]
         pub fn clear_cookie(&self) {
             self.0.clear_cookie();
         }
@@ -199,6 +204,21 @@ pub mod lnu_elytra {
         }
 
         #[cfg(feature = "reqwest_cookie_store")]
+        fn insert_cookies<'a>(
+            &self,
+            py: Python<'a>,
+            cookies: String,
+        ) -> PyResult<Bound<'a, PyAny>> {
+            let client = self.0.clone();
+            pyo3_async_runtimes::tokio::future_into_py(py, async move {
+                let client = client.read().await;
+                Ok(client
+                    .insert_cookies(&cookies)
+                    .map_err::<PyErr, _>(Into::into)?)
+            })
+        }
+
+        #[cfg(feature = "reqwest_cookie_store")]
         fn clear_cookie<'a>(&self, py: Python<'a>) -> PyResult<Bound<'a, PyAny>> {
             let client = self.0.clone();
             pyo3_async_runtimes::tokio::future_into_py(py, async move {
@@ -230,6 +250,7 @@ pub mod lnu_elytra {
             r#"
             class AsyncClient:
                 def insert_cookie(self, cookie: builtins.str) -> typing.Awaitable[None]: ...
+                def insert_cookies(self, cookies: builtins.str) -> typing.Awaitable[None]: ...
                 def clear_cookie(self) -> typing.Awaitable[None]: ...
             "#
         }
