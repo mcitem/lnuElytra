@@ -131,6 +131,8 @@ impl Default for Client {
 
 #[cfg(feature = "converter")]
 pub fn csvpn_converter(url: Url) -> R<Url> {
-    let config = webvpn_converter::Config::default();
-    Ok(config.encrypt_url(&url)?)
+    use std::sync::LazyLock;
+    use webvpn_converter::Config;
+    static CONFIG: LazyLock<Config> = LazyLock::new(|| Config::default());
+    Ok(CONFIG.encrypt_url(&url)?)
 }
