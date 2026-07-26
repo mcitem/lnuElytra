@@ -9,7 +9,7 @@ impl Client {
         self.get(def::LOGIN_URL)?
             .send()
             .await?
-            .doc()
+            ._doc()
             .await?
             .use_val(&def::S_SESSION_USER_KEY)
             .map(|s| s.to_owned())
