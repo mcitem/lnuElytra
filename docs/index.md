@@ -8,8 +8,11 @@ hero:
   tagline: LNU LNSF 岭南师范学院 正方教务系统 抢课 选课工具
   actions:
     - theme: brand
-      text: 学习如何抢课
+      text: 简介
       link: /tutorial/what-is-lnuElytra
+    - theme: brand
+      text: 下载安装
+      link: /tutorial/flutter
     - theme: alt
       text: 在 Github 中查看
       link: https://github.com/mcitem/lnuElytra
@@ -22,5 +25,5 @@ features:
     details: 通过多轮真实抢课测试，稳定拿下心仪课程
 
   - title: 开源免费
-    details: 由23级学长开发，现开源供大家免费使用
+    details: LICENSE AGPL-3.0
 ---

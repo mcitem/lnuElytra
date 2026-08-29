@@ -4,7 +4,11 @@
 
 经过多轮真实抢课测试，最快能3秒抢到课.
 
-- [GUI](./flutter.md)
+##
+
+- 下载安装 -> [GUI](./flutter.md), 支持Android、Windows、Linux、Macox、ios（ios需要自签名安装）
+
+##
 
 `lnuElytra` 基于Rust语言开发，并提供Python绑定以便普通用户使用.
 
