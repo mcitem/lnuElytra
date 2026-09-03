@@ -19,7 +19,7 @@ hero:
 
 features:
   - title: 快如闪电
-    details: 历史最快只用 3 秒就已抢到课
+    details: 最快只用 0 秒就已抢到课
 
   - title: 稳定可用
     details: 通过多轮真实抢课测试，稳定拿下心仪课程

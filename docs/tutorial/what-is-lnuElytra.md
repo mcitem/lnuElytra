@@ -22,6 +22,14 @@
 
 ## 战绩
 
+### 2026年9月3日，[2025级体育选课](https://www.lingnan.edu.cn/content.jsp?urltype=news.NewsContentUrl&wbtreeid=1145&wbnewsid=336396)
+
+> 寸金校区：9月3日（星期四）09:50--23:59
+>
+> 湖光校区：9月3日（星期四）15:00--23:59
+
+<img src="../assets/20260903.jpg" width=30% />
+
 ### 2026年3月5日，[2024级体育选课](https://www.lingnan.edu.cn/content.jsp?urltype=news.NewsContentUrl&wbtreeid=1145&wbnewsid=322876)
 
 > 上午 9:50 为寸金校区选课时间
